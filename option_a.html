@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>선문대학교 발전기금 - A타입</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f1f5f9;
+            color: #111827;
+        }
+
+        /* Main Color: #006A79 */
+        .sm-main {
+            color: #006A79;
+        }
+
+        .bg-sm-main {
+            background-color: #006A79;
+        }
+
+        .border-sm-main {
+            border-color: #006A79;
+        }
+
+        /* Highlight Color: #D31945 */
+        .sm-highlight {
+            color: #D31945;
+        }
+
+        .bg-sm-highlight {
+            background-color: #D31945;
+        }
+
+        .border-sm-highlight {
+            border-color: #D31945;
+        }
+
+        .sm-gray {
+            color: #8A8D8F;
+        }
+
+        .bg-sm-gray {
+            background-color: #8A8D8F;
+        }
+
+        .sm-dark {
+            color: #111827;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            max-height: 350px;
+        }
+
+        .stat-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-link {
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: #006A79;
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <!-- Navigation -->
+    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20">
+                <div class="flex items-center">
+                    <!-- 상단 로고 이미지 교체 영역 -->
+                    <div class="flex-shrink-0 flex items-center cursor-pointer">
+                        <img src="발전기금.png" alt="선문대학교 발전기금 로고" class="h-10 w-auto object-contain">
+                    </div>
+                    <div class="hidden md:ml-10 md:flex md:space-x-8">
+                        <a href="#" class="nav-link text-sm font-bold sm-dark">기금소개</a>
+                        <a href="#" class="nav-link text-sm font-bold sm-dark">기부참여</a>
+                        <a href="#" class="nav-link text-sm font-bold sm-dark border-b-2 border-sm-main">기부리포트</a>
+                        <a href="#" class="nav-link text-sm font-bold sm-dark">예우프로그램</a>
+                        <a href="#" class="nav-link text-sm font-bold sm-dark">선문멤버스</a>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button class="text-xs font-bold sm-gray hover:text-sm-main transition-colors">로그인</button>
+                    <button
+                        class="bg-sm-highlight text-white px-6 py-2 rounded-full text-sm font-bold hover:opacity-90 transition-all shadow-md shadow-[#D31945]/30">기부하기</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero / Real-time Stats -->
+    <header class="bg-sm-main text-white py-16 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10"
+            style="background-image: radial-gradient(rgba(255,255,255,0.3) 1px, transparent 1px); background-size: 20px 20px;">
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-12">
+                <h1 class="text-3xl md:text-5xl font-black mb-4">나눔의 가치, <span class="text-[#FFC72C]">데이터</span>로 증명합니다
+                </h1>
+                <p class="text-lg opacity-80 text-white">선문대학교 발전기금은 기부자님의 소중한 정성을 가장 투명하게 관리합니다.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div
+                    class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/10 text-center stat-card shadow-lg">
+                    <p class="text-sm opacity-80 mb-1 text-white">총 누적 기부액</p>
+                    <h2 class="text-3xl font-black text-[#FFC72C]">18,573,702,780<span
+                            class="text-sm ml-1 text-white">원</span>
+                    </h2>
+                </div>
+                <div
+                    class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/10 text-center stat-card shadow-lg">
+                    <p class="text-sm opacity-80 mb-1 text-white">총 기부 참여자</p>
+                    <h2 class="text-3xl font-black text-[#FFC72C]">7,558<span class="text-sm ml-1 text-white">명</span>
+                    </h2>
+                </div>
+                <div
+                    class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/10 text-center stat-card shadow-lg">
+                    <p class="text-sm opacity-80 mb-1 text-white">올해의 목표 달성률</p>
+                    <h2 class="text-3xl font-black text-[#FFC72C]">71<span class="text-sm ml-1 text-white">%</span></h2>
+                </div>
+                <div
+                    class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/10 text-center stat-card shadow-lg">
+                    <p class="text-sm opacity-80 mb-1 text-white">선문멤버스(후원의 집)</p>
+                    <h2 class="text-3xl font-black text-[#FFC72C]">441<span class="text-sm ml-1 text-white">개소</span>
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Quick Menu -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-20">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <button
+                class="bg-white shadow-lg rounded-xl p-5 flex items-center gap-4 hover:bg-gray-50 hover:border-sm-main border-2 border-transparent transition-all group">
+                <span class="text-2xl group-hover:scale-110 transition-transform">&#x1F4DC;</span>
+                <div class="text-left">
+                    <p class="text-xs text-gray-400">간편 서비스</p>
+                    <p class="text-sm font-black sm-dark group-hover:text-sm-main">영수증 발급</p>
+                </div>
+            </button>
+            <button
+                class="bg-white shadow-lg rounded-xl p-5 flex items-center gap-4 hover:bg-gray-50 hover:border-sm-main border-2 border-transparent transition-all group">
+                <span class="text-2xl group-hover:scale-110 transition-transform">&#x1F50D;</span>
+                <div class="text-left">
+                    <p class="text-xs text-gray-400">데이터 조회</p>
+                    <p class="text-sm font-black sm-dark group-hover:text-sm-main">기부내역 조회</p>
+                </div>
+            </button>
+            <button
+                class="bg-white shadow-lg rounded-xl p-5 flex items-center gap-4 hover:bg-gray-50 hover:border-sm-main border-2 border-transparent transition-all group">
+                <span class="text-2xl group-hover:scale-110 transition-transform">&#x1F464;</span>
+                <div class="text-left">
+                    <p class="text-xs text-gray-400">존중의 가치</p>
+                    <p class="text-sm font-black sm-dark group-hover:text-sm-main">기부자 명패 찾기</p>
+                </div>
+            </button>
+            <button
+                class="bg-white shadow-lg rounded-xl p-5 flex items-center gap-4 hover:bg-gray-50 transition-colors group border-2 border-sm-highlight">
+                <span class="text-2xl group-hover:scale-110 transition-transform">&#x1F4A1;</span>
+                <div class="text-left">
+                    <p class="text-xs text-gray-400">함께 참여</p>
+                    <p class="text-sm font-black sm-highlight">크라우드 펀딩</p>
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12">
+
+        <!-- Dashboard Section -->
+        <section>
+            <div class="flex items-end justify-between mb-8">
+                <div>
+                    <h3 class="text-2xl font-black sm-dark">2026 기부 대시보드</h3>
+                    <p class="text-gray-500">투명한 운영을 위해 실시간 데이터를 시각화하여 제공합니다.</p>
+                </div>
+                <button
+                    class="text-sm font-bold sm-main hover:text-sm-highlight transition-colors flex items-center gap-1">전체
+                    리포트 다운로드 &#x2192;</button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Monthly Trend -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                    <h4 class="font-bold mb-6 flex items-center gap-2">
+                        <span class="w-2 h-2 bg-sm-main rounded-full"></span>
+                        월별 기금 모금 추이
+                    </h4>
+                    <div class="chart-container">
+                        <canvas id="monthlyChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Category Distribution -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                    <h4 class="font-bold mb-6 flex items-center gap-2">
+                        <span class="w-2 h-2 bg-sm-highlight rounded-full"></span>
+                        기금 사용 목적별 분포
+                    </h4>
+                    <div class="chart-container">
+                        <canvas id="purposeChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- College Status -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 lg:col-span-2">
+                    <h4 class="font-bold mb-6 flex items-center gap-2">
+                        <span class="w-2 h-2 bg-sm-main rounded-full"></span>
+                        단과대학별 모금 현황 (TOP 6)
+                    </h4>
+                    <div class="chart-container" style="height: 350px;">
+                        <canvas id="collegeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recent Donors & Honor Roll -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="p-6 border-b border-gray-50 flex justify-between items-center">
+                    <h4 class="font-bold italic">실시간 기부 소식</h4>
+                    <span class="text-xs text-sm-highlight bg-sm-highlight/10 px-2 py-1 rounded font-bold">LIVE</span>
+                </div>
+                <div class="divide-y divide-gray-50">
+                    <div class="p-5 flex items-center justify-between hover:bg-gray-50 transition-colors">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-xl">
+                                &#x1F464;</div>
+                            <div>
+                                <p class="font-bold sm-dark">김*준 동문 (컴퓨터공학 18)</p>
+                                <p class="text-xs text-gray-400">후배 사랑 장학기금</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-black sm-highlight">1,000,000원</p>
+                            <p class="text-[10px] text-gray-400">5분 전</p>
+                        </div>
+                    </div>
+                    <div class="p-5 flex items-center justify-between hover:bg-gray-50 transition-colors">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-xl">
+                                &#x1F464;</div>
+                            <div>
+                                <p class="font-bold sm-dark">이*희 교수 (인문대학)</p>
+                                <p class="text-xs text-gray-400">인문관 환경 개선 기금</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-black sm-highlight">500,000원</p>
+                            <p class="text-[10px] text-gray-400">12분 전</p>
+                        </div>
+                    </div>
+                    <div class="p-5 flex items-center justify-between hover:bg-gray-50 transition-colors">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-xl">
+                                &#x1F3E2;</div>
+                            <div>
+                                <p class="font-bold sm-dark">(주)선문네트웍스</p>
+                                <p class="text-xs text-gray-400">학교 발전 일반기금</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-black sm-highlight">10,000,000원</p>
+                            <p class="text-[10px] text-gray-400">45분 전</p>
+                        </div>
+                    </div>
+                </div>
+                <button
+                    class="w-full py-4 bg-gray-50 text-xs font-bold text-gray-400 hover:text-sm-main transition-colors">나눔의
+                    소식 더보기</button>
+            </div>
+
+            <div class="space-y-6">
+                <div class="bg-sm-main rounded-2xl p-6 text-white shadow-lg relative overflow-hidden group">
+                    <div
+                        class="absolute -right-4 -bottom-4 text-8xl opacity-10 transform group-hover:scale-110 transition-transform">
+                        &#x1F4B0;</div>
+                    <h4 class="text-xl font-bold mb-2">기부 참여 가이드</h4>
+                    <p class="text-sm opacity-90 mb-6 leading-relaxed">선문대학교는 온라인 약정, 급여 공제, ARS 등 기부자님께 편리한 다양한 참여 방법을
+                        제공합니다.</p>
+                    <button
+                        class="bg-white text-sm-main px-6 py-2 rounded-full text-sm font-bold shadow-md hover:bg-gray-50">자세히
+                        보기</button>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                    <h4 class="font-bold mb-4">세제 혜택 안내</h4>
+                    <div class="space-y-3">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">개인 기부자</span>
+                            <span class="font-bold sm-dark">최대 100% 소득공제</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">법인 기부자</span>
+                            <span class="font-bold sm-dark">50% 손금산입</span>
+                        </div>
+                    </div>
+                    <hr class="my-4 border-gray-50">
+                    <p class="text-[11px] text-gray-400">발전기금은 법정기부금으로 연말정산 시 세액공제 혜택을 받으실 수 있습니다.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 밝은 회색 계열로 재설계된 Footer -->
+    <footer class="bg-gray-50 text-gray-800 py-16 border-t-4 border-sm-highlight">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-2">
+                    <!-- 하단 로고 이미지 영역 -->
+                    <div class="flex items-center mb-6">
+                        <img src="발전기금.png" alt="선문대학교 발전기금 로고" class="h-10 w-auto object-contain">
+                    </div>
+                    <p class="text-gray-600 text-sm max-w-sm mb-6 leading-relaxed">
+                        충청남도 아산시 탕정면 선문로221번길 70<br>선문대학교 홍보대외협력국 발전기금팀
+                    </p>
+                    <div class="flex gap-4">
+                        <button
+                            class="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:border-sm-highlight hover:text-sm-highlight transition-colors text-gray-600">&#x1F4F1;</button>
+                        <button
+                            class="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:border-sm-highlight hover:text-sm-highlight transition-colors text-gray-600">&#x1F4BB;</button>
+                        <button
+                            class="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:border-sm-highlight hover:text-sm-highlight transition-colors text-gray-600">&#x1F4E7;</button>
+                    </div>
+                </div>
+                <div>
+                    <h5 class="font-bold mb-6 text-sm uppercase tracking-widest text-sm-highlight">서비스</h5>
+                    <ul class="space-y-3 text-sm text-gray-600">
+                        <li><a href="#" class="hover:text-sm-main transition-colors">영수증 발급 안내</a></li>
+                        <li><a href="#" class="hover:text-sm-main transition-colors">기부자 명패 안내</a></li>
+                        <li><a href="#" class="hover:text-sm-main transition-colors">FAQ</a></li>
+                        <li><a href="#" class="hover:text-sm-main transition-colors">Q&A 게시판</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-bold mb-6 text-sm uppercase tracking-widest text-sm-highlight">고객센터</h5>
+                    <p class="text-2xl font-black mb-2 text-sm-dark">041-530-2000</p>
+                    <p class="text-sm text-gray-500">평일 09:00 - 17:30 (토/일 휴무)</p>
+                    <p class="text-sm text-gray-500 mt-1">fund@sunmoon.ac.kr</p>
+                </div>
+            </div>
+            <div class="pt-8 border-t border-gray-200 text-center text-sm font-medium text-gray-400">
+                &copy; 2026 SUNMOON UNIVERSITY. ALL RIGHTS RESERVED.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function wrapText(text, maxChars) {
+            if (text.length <= maxChars) return text;
+            const words = text.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+            for (let i = 1; i < words.length; i++) {
+                if (currentLine.length + words[i].length + 1 <= maxChars) {
+                    currentLine += ' ' + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        const tooltipConfig = {
+            callbacks: {
+                title: function (tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) return label.join(' ');
+                    return label;
+                }
+            }
+        };
+
+        Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
+        Chart.defaults.color = '#94a3b8';
+
+        // 1. Monthly Chart
+        const ctxMonthly = document.getElementById('monthlyChart').getContext('2d');
+        new Chart(ctxMonthly, {
+            type: 'line',
+            data: {
+                labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                datasets: [{
+                    label: '2026년 모금액 (백만)',
+                    data: [450, 520, 880, 610, 490, 720, 550, 480, 950, 1100, 1500, 2100],
+                    borderColor: '#006A79',
+                    backgroundColor: 'rgba(0, 106, 121, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#fff',
+                    pointBorderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false }, tooltip: tooltipConfig },
+                scales: {
+                    x: { grid: { display: false } },
+                    y: { grid: { borderDash: [5, 5] }, ticks: { callback: v => v + 'M' } }
+                }
+            }
+        });
+
+        // 2. Purpose Chart
+        const ctxPurpose = document.getElementById('purposeChart').getContext('2d');
+        new Chart(ctxPurpose, {
+            type: 'doughnut',
+            data: {
+                labels: ['장학기금', '시설확충', '연구지원', '일반발전', '기타'],
+                datasets: [{
+                    data: [45, 25, 15, 10, 5],
+                    backgroundColor: ['#006A79', '#D31945', '#FFC72C', '#8A8D8F', '#111827'],
+                    borderWidth: 0,
+                    hoverOffset: 15
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: {
+                    legend: { position: 'right', labels: { usePointStyle: true, boxWidth: 6, font: { size: 11 } } },
+                    tooltip: tooltipConfig
+                }
+            }
+        });
+
+        // 3. College Chart
+        const collegeLabels = ['인문사회대학', '공과대학', 'SW융합대학', '글로벌비즈니스대학', '간호보건대학', '기타부속기관'].map(l => wrapText(l, 10));
+        const ctxCollege = document.getElementById('collegeChart').getContext('2d');
+        new Chart(ctxCollege, {
+            type: 'bar',
+            data: {
+                labels: collegeLabels,
+                datasets: [{
+                    label: '단과대학별 누적액 (억)',
+                    data: [42, 38, 55, 29, 31, 15],
+                    backgroundColor: collegeLabels.map((_, i) => i === 2 ? '#D31945' : '#006A79'),
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false }, tooltip: tooltipConfig },
+                scales: {
+                    x: { grid: { display: false } },
+                    y: { grid: { borderDash: [5, 5] }, ticks: { callback: v => v + '억' } }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

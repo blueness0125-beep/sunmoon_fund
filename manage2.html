@@ -1,0 +1,362 @@
+import React, { useState } from 'react';
+import {
+Home,
+Users,
+FileText,
+Settings,
+LogOut,
+Bell,
+Search,
+TrendingUp,
+ChevronDown,
+Menu,
+CreditCard,
+LayoutDashboard,
+PieChart as PieChartIcon,
+Download
+} from 'lucide-react';
+
+// --- 사용자 정의 테마 컬러 (가이드라인 반영) ---
+const theme = {
+smRed: '#D31945',
+smTeal: '#006A79',
+smGray: '#A5AEB4',
+smDark: '#0D1F1D',
+white: '#FFFFFF',
+};
+
+export default function App() {
+const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+const [activeMenu, setActiveMenu] = useState('dashboard');
+
+// AS-IS 화면 기반 모크업 데이터
+const recentPledges = [
+{ id: '20260312-01', date: '2026-03-12', name: '김선문', type: '개인', amount: '500,000', fundType: '장학기금', status: '접수완료' },
+{ id: '20260311-04', date: '2026-03-11', name: '(주)애플디자인', type: '기업', amount: '10,000,000', fundType: '건축기금', status:
+'입금대기' },
+{ id: '20260310-02', date: '2026-03-10', name: '이동문', type: '동문', amount: '1,000,000', fundType: '일반발전기금', status:
+'접수완료' },
+{ id: '20260309-08', date: '2026-03-09', name: '박교직', type: '교직원', amount: '50,000', fundType: '천원의 아침밥', status: '정기결제'
+},
+{ id: '20260308-01', date: '2026-03-08', name: '최학부모', type: '학부모', amount: '300,000', fundType: '단과대발전기금', status:
+'접수완료' },
+];
+
+const chartData = [
+{ month: '10월', amount: 45 },
+{ month: '11월', amount: 52 },
+{ month: '12월', amount: 88 },
+{ month: '1월', amount: 35 },
+{ month: '2월', amount: 60 },
+{ month: '3월', amount: 75 },
+];
+
+return (
+<div className="flex h-screen bg-[#f8fafc] font-sans text-[#0D1F1D] overflow-hidden">
+
+    {/* Sidebar */}
+    <aside className={`${isSidebarOpen ? 'w-64' : 'w-20' } bg-[#0D1F1D] text-[#A5AEB4] transition-all duration-300 flex
+        flex-col relative z-20`}>
+        {/* Logo Area */}
+        <div className="h-16 flex items-center justify-center border-b border-gray-700 bg-[#0A1816]">
+            {isSidebarOpen ? (
+            <div className="flex items-center gap-2">
+                <div
+                    className="w-8 h-8 rounded-full bg-[#006A79] flex items-center justify-center text-white font-bold">
+                    SM</div>
+                <span className="text-white font-bold text-lg tracking-wider">발전기금 ADMIN</span>
+            </div>
+            ) : (
+            <div className="w-8 h-8 rounded-full bg-[#006A79] flex items-center justify-center text-white font-bold">SM
+            </div>
+            )}
+        </div>
+
+        {isSidebarOpen && (
+        <div className="p-4 border-b border-gray-700 bg-black/20">
+            <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center text-white">
+                    <Users size={20} />
+                </div>
+                <div>
+                    <p className="text-white font-medium text-sm">해달이 <span
+                            className="text-xs text-[#006A79] ml-1">관리자</span></p>
+                    <p className="text-xs text-gray-400">IP: 123.456.789.123</p>
+                </div>
+            </div>
+        </div>
+        )}
+
+        {/* Navigation */}
+        <nav className="flex-1 overflow-y-auto py-4">
+            <ul className="space-y-1 px-2">
+                <NavItem icon={<LayoutDashboard size={20} />} text="대시보드" isActive={activeMenu === 'dashboard'}
+                onClick={() => setActiveMenu('dashboard')} isOpen={isSidebarOpen} />
+
+                <div className="pt-4 pb-1">
+                    {isSidebarOpen && <p className="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                        메인 업무</p>}
+                </div>
+
+                <NavItem icon={<CreditCard size={20} />} text="약정 관리" isActive={activeMenu === 'pledge'} onClick={() =>
+                setActiveMenu('pledge')} isOpen={isSidebarOpen} />
+                <NavItem icon={<Users size={20} />} text="회원 관리" isActive={activeMenu === 'member'} onClick={() =>
+                setActiveMenu('member')} isOpen={isSidebarOpen} />
+                <NavItem icon={<FileText size={20} />} text="게시판 관리" isActive={activeMenu === 'board'} onClick={() =>
+                setActiveMenu('board')} isOpen={isSidebarOpen} />
+                <NavItem icon={<Home size={20} />} text="홈페이지 관리" isActive={activeMenu === 'home'} onClick={() =>
+                setActiveMenu('home')} isOpen={isSidebarOpen} />
+            </ul>
+        </nav>
+
+        {/* Bottom Actions */}
+        <div className="p-4 border-t border-gray-700">
+            <button
+                className="flex items-center gap-3 text-gray-400 hover:text-white transition-colors w-full p-2 rounded-lg hover:bg-white/5">
+                <LogOut size={20} />
+                {isSidebarOpen && <span>로그아웃</span>}
+            </button>
+        </div>
+    </aside>
+
+    {/* Main Content */}
+    <main className="flex-1 flex flex-col h-screen overflow-hidden">
+
+        {/* Top Header */}
+        <header
+            className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 z-10 shadow-sm">
+            <div className="flex items-center gap-4">
+                <button onClick={()=> setIsSidebarOpen(!isSidebarOpen)} className="p-2 rounded-lg hover:bg-gray-100
+                    text-gray-600">
+                    <Menu size={20} />
+                </button>
+                <h1 className="text-xl font-bold text-[#0D1F1D]">
+                    {activeMenu === 'dashboard' && '종합 상황판'}
+                    {activeMenu === 'pledge' && '상시 약정 신청 관리'}
+                    {activeMenu === 'member' && '회원 관리'}
+                    {activeMenu === 'board' && '게시판 등록 관리'}
+                </h1>
+            </div>
+
+            <div className="flex items-center gap-4">
+                <div className="relative hidden md:block">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                    <input type="text" placeholder="회원명, 약정번호 검색..."
+                        className="pl-10 pr-4 py-2 border border-gray-300 rounded-full text-sm focus:outline-none focus:border-[#006A79] focus:ring-1 focus:ring-[#006A79] w-64 bg-gray-50 focus:bg-white transition-all" />
+                </div>
+                <button className="p-2 rounded-full hover:bg-gray-100 text-gray-600 relative">
+                    <Bell size={20} />
+                    <span className="absolute top-1 right-1 w-2 h-2 bg-[#D31945] rounded-full"></span>
+                </button>
+                <button className="p-2 rounded-full hover:bg-gray-100 text-gray-600">
+                    <Settings size={20} />
+                </button>
+            </div>
+        </header>
+
+        {/* Scrollable Content Area */}
+        <div className="flex-1 overflow-y-auto p-6 scroll-smooth">
+
+            {/* Dashboard View */}
+            {activeMenu === 'dashboard' && (
+            <div className="space-y-6 max-w-7xl mx-auto">
+
+                {/* KPI Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <KpiCard title="금월 모금액 (원)" value="142,500,000" trend="+12.5%" isPositive={true}
+                        color="bg-[#006A79]" />
+                    <KpiCard title="누적 기부자 수 (명)" value="12,458" trend="+32명" isPositive={true} color="bg-[#D31945]" />
+                    <KpiCard title="신규 약정 대기 (건)" value="18" trend="처리 필요" isPositive={false} color="bg-[#A5AEB4]" />
+                    <KpiCard title="크라우드 펀딩 달성률" value="85%" trend="종료 D-5" isPositive={true} color="bg-[#0D1F1D]" />
+                </div>
+
+                {/* Charts Row */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    {/* Trend Chart (CSS Mockup for safety) */}
+                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 lg:col-span-2">
+                        <div className="flex justify-between items-center mb-6">
+                            <h3 className="font-bold text-lg text-[#0D1F1D]">최근 6개월 모금 추이</h3>
+                            <button className="flex items-center gap-1 text-sm text-gray-500 hover:text-[#006A79]">
+                                <Download size={16} /> 다운로드
+                            </button>
+                        </div>
+                        <div className="h-64 flex items-end justify-between gap-2 pt-4">
+                            {chartData.map((data, idx) => (
+                            <div key={idx} className="flex flex-col items-center w-full group">
+                                <div className="relative w-full flex justify-center h-full items-end">
+                                    <div className="w-3/4 bg-[#006A79]/20 group-hover:bg-[#006A79] rounded-t-md transition-all duration-300 relative"
+                                        style={{ height: `${data.amount}%` }}>
+                                        <div
+                                            className="opacity-0 group-hover:opacity-100 absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs py-1 px-2 rounded whitespace-nowrap transition-opacity">
+                                            {data.amount * 100}만원
+                                        </div>
+                                    </div>
+                                </div>
+                                <span className="text-sm text-gray-500 mt-3">{data.month}</span>
+                            </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Donut Chart (CSS Mockup) */}
+                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                        <h3 className="font-bold text-lg text-[#0D1F1D] mb-6">기부 목적별 비율</h3>
+                        <div className="flex flex-col items-center justify-center h-48 relative">
+                            {/* Mockup Pie Chart using CSS border */}
+                            <div className="w-40 h-40 rounded-full border-[16px] border-[#006A79] relative">
+                                <div
+                                    className="absolute inset-[-16px] rounded-full border-[16px] border-[#D31945] clip-half-right transform rotate-45">
+                                </div>
+                                <div
+                                    className="absolute inset-[-16px] rounded-full border-[16px] border-[#A5AEB4] clip-quarter-bottom transform -rotate-12">
+                                </div>
+                                <div className="absolute inset-0 flex items-center justify-center flex-col">
+                                    <span className="text-2xl font-black text-[#0D1F1D]">100%</span>
+                                    <span className="text-xs text-gray-500">Total</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="mt-6 space-y-3">
+                            <div className="flex justify-between items-center text-sm">
+                                <div className="flex items-center gap-2"><span
+                                        className="w-3 h-3 rounded-full bg-[#006A79]"></span>장학기금</div>
+                                <span className="font-bold">55%</span>
+                            </div>
+                            <div className="flex justify-between items-center text-sm">
+                                <div className="flex items-center gap-2"><span
+                                        className="w-3 h-3 rounded-full bg-[#D31945]"></span>건축기금</div>
+                                <span className="font-bold">30%</span>
+                            </div>
+                            <div className="flex justify-between items-center text-sm">
+                                <div className="flex items-center gap-2"><span
+                                        className="w-3 h-3 rounded-full bg-[#A5AEB4]"></span>일반발전기금</div>
+                                <span className="font-bold">15%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Data Table (Redesign of AS-IS Image 01) */}
+                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                        <h3 className="font-bold text-lg text-[#0D1F1D]">최근 접수된 약정 내역</h3>
+                        <button
+                            className="px-4 py-2 bg-[#006A79] text-white text-sm font-medium rounded-lg hover:bg-[#005560] transition-colors shadow-sm">
+                            전체 보기
+                        </button>
+                    </div>
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-left border-collapse">
+                            <thead>
+                                <tr
+                                    className="bg-white text-xs uppercase tracking-wider text-gray-500 border-b border-gray-100">
+                                    <th className="p-4 font-semibold">약정번호/일자</th>
+                                    <th className="p-4 font-semibold">성명(회원구분)</th>
+                                    <th className="p-4 font-semibold">기부금종류</th>
+                                    <th className="p-4 font-semibold text-right">약정금액(원)</th>
+                                    <th className="p-4 font-semibold text-center">상태</th>
+                                    <th className="p-4 font-semibold text-center">관리</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-gray-100">
+                                {recentPledges.map((pledge, idx) => (
+                                <tr key={idx} className="hover:bg-gray-50 transition-colors">
+                                    <td className="p-4">
+                                        <div className="font-medium text-[#006A79]">{pledge.id}</div>
+                                        <div className="text-xs text-gray-400 mt-1">{pledge.date}</div>
+                                    </td>
+                                    <td className="p-4">
+                                        <div className="font-medium text-gray-900">{pledge.name}</div>
+                                        <div className="text-xs text-gray-500 mt-1">{pledge.type}</div>
+                                    </td>
+                                    <td className="p-4 text-sm text-gray-600">{pledge.fundType}</td>
+                                    <td className="p-4 text-right font-bold text-gray-900">{pledge.amount}</td>
+                                    <td className="p-4 text-center">
+                                        <span className={`inline-block px-3 py-1 text-xs font-semibold rounded-full ${
+                                            pledge.status==='접수완료' ? 'bg-green-100 text-green-700' :
+                                            pledge.status==='입금대기' ? 'bg-[#D31945]/10 text-[#D31945]'
+                                            : 'bg-[#006A79]/10 text-[#006A79]' }`}>
+                                            {pledge.status}
+                                        </span>
+                                    </td>
+                                    <td className="p-4 text-center">
+                                        <button
+                                            className="text-gray-400 hover:text-[#006A79] text-sm font-medium px-2 py-1 rounded border border-gray-200 hover:border-[#006A79] transition-colors">
+                                            상세
+                                        </button>
+                                    </td>
+                                </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            )}
+
+            {/* Fallback for other menus */}
+            {activeMenu !== 'dashboard' && (
+            <div className="flex flex-col items-center justify-center h-full text-center space-y-4 text-gray-500">
+                <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center text-gray-400">
+                    <Settings size={48} />
+                </div>
+                <div>
+                    <h2 className="text-xl font-bold text-gray-700 mb-2">선택하신 메뉴의 고도화 화면입니다.</h2>
+                    <p className="text-sm">AS-IS의 복잡한 검색 필터는 우측 '상세 필터' 슬라이드 패널로 숨기고,<br />데이터 그리드 영역을 넓혀 가독성을 극대화하는 구조로
+                        구현됩니다.</p>
+                </div>
+                <button onClick={()=> setActiveMenu('dashboard')} className="mt-4 px-6 py-2 bg-[#D31945] text-white
+                    rounded-lg shadow-sm hover:bg-[#b01438] transition-colors">
+                    대시보드로 돌아가기
+                </button>
+            </div>
+            )}
+
+        </div>
+    </main>
+
+    {/* Styles for complex mockups (like pie chart) */}
+    <style dangerouslySetInnerHTML={{__html: ` .clip-half-right { clip-path: polygon(50% 0, 100% 0, 100% 100%, 50%
+        100%); } .clip-quarter-bottom { clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0 100%); } `}} />
+</div>
+);
+}
+
+// Subcomponent: NavItem
+function NavItem({ icon, text, isActive, onClick, isOpen }) {
+return (
+<li>
+    <button onClick={onClick} className={`w-full flex items-center gap-3 px-3 py-3 rounded-lg transition-all ${ isActive
+        ? 'bg-[#006A79] text-white shadow-md' : 'text-gray-400 hover:bg-white/5 hover:text-white' }`}>
+        <span className={`${isActive ? 'text-white' : 'text-gray-400' }`}>{icon}</span>
+        {isOpen && <span className="font-medium text-sm">{text}</span>}
+        {isOpen && isActive && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-white"></div>}
+    </button>
+</li>
+);
+}
+
+// Subcomponent: KPI Card
+function KpiCard({ title, value, trend, isPositive, color }) {
+return (
+<div
+    className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between relative overflow-hidden group hover:shadow-md transition-shadow">
+    <div className={`absolute top-0 right-0 w-16 h-16 ${color} opacity-5 rounded-bl-full transform translate-x-4
+        -translate-y-4 group-hover:scale-150 transition-transform duration-500`}></div>
+    <div>
+        <h4 className="text-sm font-semibold text-gray-500 mb-1">{title}</h4>
+        <div className="text-3xl font-black text-[#0D1F1D] tracking-tight">{value}</div>
+    </div>
+    <div className="mt-4 flex items-center gap-2">
+        <span className={`flex items-center text-xs font-bold px-2 py-1 rounded-md ${ isPositive
+            ? 'bg-green-100 text-green-700' : 'bg-[#D31945]/10 text-[#D31945]' }`}>
+            {isPositive ?
+            <TrendingUp size={12} className="mr-1" /> :
+            <ChevronDown size={12} className="mr-1" />}
+            {trend}
+        </span>
+        <span className="text-xs text-gray-400">vs 지난달</span>
+    </div>
+</div>
+);
+}

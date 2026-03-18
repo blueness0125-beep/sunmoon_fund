@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>선문대학교 발전기금 - 전환 최적화 펀딩</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f8fafc;
+            color: #111827;
+        }
+
+        /* Main Color: #006A79 */
+        .sm-main {
+            color: #006A79;
+        }
+
+        .bg-sm-main {
+            background-color: #006A79;
+        }
+
+        .border-sm-main {
+            border-color: #006A79;
+        }
+
+        /* Highlight Color: #D31945 */
+        .sm-highlight {
+            color: #D31945;
+        }
+
+        .bg-sm-highlight {
+            background-color: #D31945;
+        }
+
+        .border-sm-highlight {
+            border-color: #D31945;
+        }
+
+        .sm-gray {
+            color: #8A8D8F;
+        }
+
+        .bg-sm-gray {
+            background-color: #8A8D8F;
+        }
+
+        .sm-dark {
+            color: #111827;
+        }
+
+        .progress-bar-inner {
+            transition: width 1.5s ease-in-out;
+        }
+
+        .funding-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .funding-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: #D31945;
+        }
+
+        .ticker-wrap {
+            overflow: hidden;
+            background: #006A79;
+            color: white;
+            padding: 10px 0;
+        }
+
+        .ticker {
+            display: flex;
+            white-space: nowrap;
+            animation: ticker 30s linear infinite;
+        }
+
+        @keyframes ticker {
+            0% {
+                transform: translateX(100%);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <!-- Sticky Ticker -->
+    <div class="ticker-wrap sticky top-0 z-[60]">
+        <div class="ticker gap-12 font-bold text-xs uppercase tracking-widest text-[#FFD166]">
+            <span>&#x1F389; 박*호 동문님 1,000,000원 기부!</span>
+            <span class="text-white">&#x1F389; (주)대선 테크 5,000,000원 기부!</span>
+            <span>&#x1F389; 익명의 교직원 500,000원 기부!</span>
+            <span class="text-white">&#x1F389; 선문 23학부 일동 2,000,000원 기부!</span>
+            <span>&#x1F389; 이*희 졸업생 100,000원 기부!</span>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <nav class="bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-[40px] z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+            <div class="flex items-center gap-2 cursor-pointer">
+                <!-- 교체된 옵션 C 상단 로고 영역 -->
+                <img src="./발전기금.png" alt="선문대학교 발전기금 로고"
+                    class="h-10 md:h-12 object-contain bg-white/95 px-3 py-1.5 rounded-xl shadow-md"
+                    onerror="this.src='https://via.placeholder.com/250x60?text=SUNMOON+FUND'">
+            </div>
+            <div class="flex items-center gap-6">
+                <button
+                    class="bg-sm-highlight text-white px-6 py-2.5 rounded-full text-sm font-bold shadow-lg shadow-[#D31945]/30 hover:scale-105 transition-transform">간편
+                    기부하기</button>
+                <button class="sm-dark font-black text-2xl hover:text-sm-highlight transition-colors">&#x2630;</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="bg-white py-16 md:py-24">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div>
+                <span
+                    class="inline-block py-1 px-4 rounded-full bg-sm-highlight/10 sm-highlight font-black text-xs mb-6 uppercase tracking-widest border border-sm-highlight/20">Urgent
+                    Campaign</span>
+                <h1 class="text-4xl md:text-6xl font-black sm-dark mb-8 leading-[1.1]">지금, 당신의 손길이<br>필요한 <span
+                        class="sm-main">선문의 프로젝트</span></h1>
+                <p class="text-lg text-gray-500 mb-10 leading-relaxed">거창한 약속이 아니어도 괜찮습니다. 동문님들의 작은 관심이 모여 학생들의 미래를 바꾸는
+                    큰 힘이 됩니다. 지금 진행 중인 펀딩에 참여해 주세요.</p>
+
+                <div class="flex flex-wrap gap-4">
+                    <button
+                        class="bg-sm-highlight text-white px-10 py-4 rounded-xl text-lg font-black shadow-2xl shadow-[#D31945]/30 hover:-translate-y-1 transition-transform">펀딩
+                        참여하기</button>
+                    <button
+                        class="bg-white border-2 border-gray-200 px-10 py-4 rounded-xl text-lg font-black sm-dark hover:border-sm-main hover:text-sm-main transition-colors">전체
+                        프로젝트 보기</button>
+                </div>
+            </div>
+
+            <!-- Highlight Campaign Card -->
+            <div
+                class="bg-[#f8fafc] rounded-[2.5rem] p-8 border-2 border-sm-highlight/10 hover:border-sm-highlight/30 transition-colors shadow-2xl relative">
+                <div
+                    class="absolute -top-6 -right-6 w-24 h-24 bg-sm-highlight rounded-full flex items-center justify-center font-black text-white text-xl animate-pulse shadow-lg">
+                    D-3</div>
+                <div class="aspect-video bg-gray-200 rounded-2xl mb-8 overflow-hidden">
+                    <div class="w-full h-full bg-cover bg-center hover:scale-105 transition-transform duration-700"
+                        style="background-image: url('https://images.unsplash.com/photo-1510531704581-5b2870972060?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80');">
+                    </div>
+                </div>
+                <h3 class="text-2xl font-black sm-dark mb-4">천원의 아침밥: 선배님이 쏜다!</h3>
+                <p class="text-sm text-gray-500 mb-8">시험 기간 학생들의 든든한 아침을 위해 릴레이 기부에 동참해 주세요.</p>
+
+                <div class="space-y-2 mb-8">
+                    <div class="flex justify-between text-sm font-bold">
+                        <span class="sm-main">현재 8,420,000원</span>
+                        <span class="sm-highlight">84% 달성</span>
+                    </div>
+                    <div class="w-full h-4 bg-gray-200 rounded-full overflow-hidden">
+                        <div class="progress-bar-inner h-full bg-sm-highlight" style="width: 84%;"></div>
+                    </div>
+                    <div class="text-right text-[10px] text-gray-400">목표액: 10,000,000원</div>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div class="flex -space-x-3">
+                        <div class="w-10 h-10 rounded-full border-2 border-white bg-gray-300"></div>
+                        <div class="w-10 h-10 rounded-full border-2 border-white bg-gray-400"></div>
+                        <div class="w-10 h-10 rounded-full border-2 border-white bg-gray-500"></div>
+                        <div
+                            class="w-10 h-10 rounded-full border-2 border-white bg-sm-main flex items-center justify-center text-[10px] font-bold text-white">
+                            +124</div>
+                    </div>
+                    <p class="text-xs font-bold sm-dark">지금까지 158명이 참여했습니다.</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Active Projects Grid -->
+    <section class="py-24 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex items-end justify-between mb-16">
+                <div>
+                    <h2 class="text-4xl font-black sm-dark mb-4">진행 중인 크라우드 펀딩</h2>
+                    <p class="text-gray-500">당신의 클릭 한 번이 학생들의 내일을 만듭니다.</p>
+                </div>
+                <div class="hidden md:flex gap-2">
+                    <button
+                        class="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center sm-dark hover:border-sm-highlight hover:text-sm-highlight bg-white transition-colors">&#x2190;</button>
+                    <button
+                        class="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center sm-dark hover:border-sm-highlight hover:text-sm-highlight bg-white transition-colors">&#x2192;</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Project 1 -->
+                <div
+                    class="funding-card bg-white rounded-3xl p-6 shadow-sm flex flex-col border border-gray-100 cursor-pointer">
+                    <div class="h-48 bg-gray-100 rounded-2xl mb-6 overflow-hidden">
+                        <div class="w-full h-full bg-cover bg-center hover:scale-105 transition-transform duration-500"
+                            style="background-image: url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');">
+                        </div>
+                    </div>
+                    <h4 class="text-xl font-bold sm-dark mb-2 group-hover:text-sm-highlight transition-colors">IT 인재 양성
+                        코딩 캠프</h4>
+                    <p class="text-sm text-gray-500 mb-6 flex-1">글로벌 IT 기업 탐방 및 실무 세미나 지원을 위한 펀딩입니다.</p>
+                    <div class="space-y-4">
+                        <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                            <div class="h-full bg-sm-main" style="width: 45%;"></div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-black sm-main">45% 달성</span>
+                            <span class="text-xs font-bold text-gray-400">D-15</span>
+                        </div>
+                        <button
+                            class="w-full py-3 bg-sm-dark text-white rounded-xl text-sm font-bold hover:bg-sm-highlight transition-colors">펀딩하기</button>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div
+                    class="funding-card bg-white rounded-3xl p-6 shadow-sm flex flex-col border border-gray-100 cursor-pointer">
+                    <div class="h-48 bg-gray-100 rounded-2xl mb-6 overflow-hidden relative">
+                        <div
+                            class="absolute top-2 left-2 bg-sm-highlight text-white text-xs font-bold px-2 py-1 rounded z-10">
+                            마감임박</div>
+                        <div class="w-full h-full bg-cover bg-center hover:scale-105 transition-transform duration-500"
+                            style="background-image: url('https://images.unsplash.com/photo-1541339907198-e08756ebafe1?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');">
+                        </div>
+                    </div>
+                    <h4 class="text-xl font-bold sm-dark mb-2 group-hover:text-sm-highlight transition-colors">스포츠과학대학
+                        장비 지원</h4>
+                    <p class="text-sm text-gray-500 mb-6 flex-1">노후된 체육 기자재 교체 및 선수들의 재활 장비 구입 기금입니다.</p>
+                    <div class="space-y-4">
+                        <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                            <div class="h-full bg-sm-highlight" style="width: 92%;"></div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-black sm-highlight">92% 달성</span>
+                            <span class="text-xs font-bold text-sm-highlight">D-2</span>
+                        </div>
+                        <button
+                            class="w-full py-3 bg-sm-highlight text-white rounded-xl text-sm font-bold hover:opacity-90 shadow-md shadow-[#D31945]/30 transition-colors">마감임박
+                            참여</button>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div
+                    class="funding-card bg-white rounded-3xl p-6 shadow-sm flex flex-col border-2 border-dashed border-gray-300 justify-center items-center text-center p-10 cursor-pointer hover:border-sm-main">
+                    <div
+                        class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">
+                        &#x1F4A1;</div>
+                    <h4 class="text-lg font-bold sm-dark mb-2">새로운 프로젝트 제안</h4>
+                    <p class="text-xs text-gray-400 mb-6">동문님들이 직접 지원하고 싶은<br>분야를 제안해 주세요.</p>
+                    <button class="text-sm font-bold sm-main hover:text-sm-highlight transition-colors">제안 가이드라인 보기
+                        &#x2192;</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Donation Tiers -->
+    <section class="py-24 bg-sm-main text-white overflow-hidden relative">
+        <div
+            class="absolute top-0 right-0 w-96 h-96 bg-white opacity-10 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2">
+        </div>
+        <div
+            class="absolute bottom-0 left-0 w-80 h-80 bg-sm-highlight opacity-20 rounded-full blur-3xl transform -translate-x-1/2 translate-y-1/2">
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10 text-center">
+            <h2 class="text-3xl md:text-5xl font-black mb-16 leading-tight">단 10초 만에 끝내는<br>선문 사랑 실천</h2>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto mb-16">
+                <button
+                    class="bg-white/10 border border-white/20 rounded-2xl p-8 hover:bg-white transition-all group hover:shadow-xl hover:-translate-y-2 text-center">
+                    <p class="text-xs text-white/70 mb-2 group-hover:text-[#006A79]/70 transition-colors">
+                        아메리카노 2잔</p>
+                    <p class="text-2xl font-black text-white group-hover:text-[#006A79] transition-colors">10,000<span
+                            class="text-xs ml-1 font-normal">원</span></p>
+                </button>
+                <button
+                    class="bg-white/10 border border-white/20 rounded-2xl p-8 hover:bg-white transition-all group hover:shadow-xl hover:-translate-y-2 text-center">
+                    <p class="text-xs text-white/70 mb-2 group-hover:text-[#006A79]/70 transition-colors">
+                        치킨 한 마리</p>
+                    <p class="text-2xl font-black text-white group-hover:text-[#006A79] transition-colors">30,000<span
+                            class="text-xs ml-1 font-normal">원</span></p>
+                </button>
+                <button
+                    class="bg-white border-2 border-sm-highlight rounded-2xl p-8 transition-all group hover:shadow-2xl hover:-translate-y-2 relative overflow-hidden text-center shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                    <div
+                        class="absolute top-0 right-0 bg-sm-highlight text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg">
+                        BEST</div>
+                    <p class="text-xs sm-highlight mb-2 font-bold transition-colors">가장 많이 기부</p>
+                    <p class="text-2xl font-black sm-main">50,000<span class="text-xs ml-1 font-normal">원</span></p>
+                </button>
+                <button
+                    class="bg-white/10 border border-white/20 rounded-2xl p-8 hover:bg-white transition-all group hover:shadow-xl hover:-translate-y-2 text-center">
+                    <p class="text-xs text-white/70 mb-2 group-hover:text-[#006A79]/70 transition-colors">
+                        직접 입력</p>
+                    <p class="text-2xl font-black text-white group-hover:text-[#006A79] transition-colors">기타</p>
+                </button>
+            </div>
+
+            <div class="flex flex-col items-center gap-6">
+                <p class="text-sm text-white/80 font-medium">로그인 없이 이름과 전화번호만으로도 약정이 가능합니다.</p>
+                <div class="flex gap-4">
+                    <div
+                        class="w-14 h-14 bg-white rounded-xl flex items-center justify-center sm-main font-bold hover:scale-105 transition-transform cursor-pointer shadow-lg">
+                        PAY</div>
+                    <div
+                        class="w-14 h-14 bg-[#FAE331] rounded-xl flex items-center justify-center text-black font-black hover:scale-105 transition-transform cursor-pointer shadow-lg">
+                        K</div>
+                    <div
+                        class="w-14 h-14 bg-white rounded-xl flex items-center justify-center sm-main font-bold text-xs hover:scale-105 transition-transform cursor-pointer shadow-lg">
+                        CARD</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Proof / Supporters -->
+    <section class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div class="order-2 lg:order-1">
+                <div class="chart-container" style="height: 350px;">
+                    <canvas id="supportChart"></canvas>
+                </div>
+            </div>
+            <div class="order-1 lg:order-2">
+                <h4 class="text-sm font-black sm-highlight tracking-widest mb-2 uppercase">Crowd Power</h4>
+                <h2 class="text-4xl font-black sm-dark mb-8">작은 정성이 모여<br>거대한 파도가 됩니다.</h2>
+                <p class="text-gray-500 mb-8 leading-relaxed">지난 한 달 동안 선문대학교 크라우드 펀딩을 통해 1,245명의 동문님이 참여해 주셨습니다. 펀딩형
+                    기부는 기존 기부 대비 젊은 동문층의 참여율이 40% 더 높습니다.</p>
+
+                <div class="grid grid-cols-2 gap-8">
+                    <div
+                        class="p-6 bg-[#f8fafc] border border-gray-100 rounded-2xl hover:border-sm-main transition-colors cursor-default">
+                        <p class="text-xs text-gray-400 mb-1">총 펀딩 참여자</p>
+                        <p class="text-2xl font-black sm-main">12,450명</p>
+                    </div>
+                    <div
+                        class="p-6 bg-[#f8fafc] border border-gray-100 rounded-2xl hover:border-sm-highlight transition-colors cursor-default">
+                        <p class="text-xs text-gray-400 mb-1">완료된 프로젝트</p>
+                        <p class="text-2xl font-black sm-highlight">84건</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-50 py-16 border-t border-gray-100">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <div class="flex items-center justify-center gap-2 mb-8 cursor-pointer">
+                <!-- 교체된 옵션 C 하단 로고 영역 -->
+                <img src="./발전기금.png" alt="선문대학교 발전기금 하단 로고"
+                    class="h-8 md:h-10 object-contain bg-white/95 px-2 py-1 rounded-lg shadow-sm"
+                    onerror="this.src='https://via.placeholder.com/200x50?text=SUNMOON+FUND'">
+            </div>
+            <p class="text-xs text-gray-400 max-w-md mx-auto mb-8 leading-relaxed">
+                선문대학교 발전기금은 공익법인으로 지정되어 투명하게 운영됩니다.<br>
+                문의: 041-530-2000 | fund@sunmoon.ac.kr
+            </p>
+            <div class="flex justify-center gap-6 text-xs font-bold sm-gray">
+                <a href="#" class="hover:text-sm-highlight transition-colors">기부자 예우</a>
+                <a href="#" class="hover:text-sm-highlight transition-colors">세제 혜택</a>
+                <a href="#" class="hover:text-sm-highlight transition-colors">후원의 집 리스트</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function wrapText(text, maxChars) {
+            if (text.length <= maxChars) return text;
+            const words = text.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+            for (let i = 1; i < words.length; i++) {
+                if (currentLine.length + words[i].length + 1 <= maxChars) {
+                    currentLine += ' ' + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        const tooltipConfig = {
+            callbacks: {
+                title: function (tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) return label.join(' ');
+                    return label;
+                }
+            }
+        };
+
+        Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
+
+        // Supporters Chart
+        const ctxSupport = document.getElementById('supportChart').getContext('2d');
+        new Chart(ctxSupport, {
+            type: 'bar',
+            data: {
+                labels: ['20대', '30대', '40대', '50대', '60대+'],
+                datasets: [{
+                    label: '펀딩 기부자 연령대 분포 (%)',
+                    data: [35, 28, 15, 12, 10],
+                    backgroundColor: ['#006A79', '#D31945', '#111827', '#8A8D8F', '#cbd5e1'],
+                    borderRadius: 8,
+                    barThickness: 40
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: tooltipConfig
+                },
+                scales: {
+                    x: { grid: { display: false } },
+                    y: { beginAtZero: true, max: 40, ticks: { callback: v => v + '%' } }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

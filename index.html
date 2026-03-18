@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>선문대학교 발전기금 홈페이지 리모델링 전략</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f8fafc;
+            color: #0D1F1D;
+        }
+
+        .sm-red {
+            color: #D31945;
+        }
+
+        .bg-sm-red {
+            background-color: #D31945;
+        }
+
+        .sm-teal {
+            color: #006A79;
+        }
+
+        .bg-sm-teal {
+            background-color: #006A79;
+        }
+
+        .sm-gray {
+            color: #A5AEB4;
+        }
+
+        .bg-sm-gray {
+            background-color: #A5AEB4;
+        }
+
+        .sm-dark {
+            color: #0D1F1D;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+
+        .timeline-container {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: #A5AEB4;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            width: 50%;
+            padding: 1rem 2rem;
+            box-sizing: border-box;
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+            text-align: right;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+            text-align: left;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            background-color: #D31945;
+            border: 4px solid white;
+            border-radius: 50%;
+            z-index: 10;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-dot {
+            right: -12px;
+        }
+
+        .timeline-item:nth-child(even) .timeline-dot {
+            left: -12px;
+        }
+
+        @media (max-width: 767px) {
+            .timeline-line {
+                left: 20px;
+            }
+
+            .timeline-item {
+                width: 100%;
+                left: 0 !important;
+                text-align: left !important;
+                padding-left: 50px;
+            }
+
+            .timeline-dot {
+                left: 8px !important;
+                right: auto !important;
+            }
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+        }
+
+        .unicode-icon {
+            font-size: 2.5rem;
+            line-height: 1;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        /* Mockup Styles */
+        .mockup-window {
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            background: #fff;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .mockup-header {
+            height: 12px;
+            background: #f1f5f9;
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            padding: 0 8px;
+        }
+
+        .mockup-dot {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #cbd5e1;
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <header class="bg-sm-teal text-white py-20 px-6 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none"
+            style="background-image: radial-gradient(#ffffff 2px, transparent 2px); background-size: 30px 30px;"></div>
+        <div class="max-w-6xl mx-auto relative z-10 text-center">
+            <span
+                class="inline-block py-1 px-3 rounded-full bg-white sm-teal font-bold text-sm tracking-wider mb-4 uppercase">디지털
+                전략 개발 파트너(블루문 인텔리전스) 제안</span>
+            <h1 class="text-4xl md:text-6xl font-black mb-6 leading-tight">선문대학교 발전기금<br><span
+                    class="text-[#FFD166]">홈페이지 리모델링</span> 전략</h1>
+            <p class="text-xl md:text-2xl font-light opacity-90 max-w-3xl mx-auto">기부자 중심의 UI/UX와 투명한 데이터 시각화를
+                통해<br>선문대학교의 나눔 문화를 새롭게 디자인합니다.</p>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 py-16 space-y-24">
+
+        <!-- 1. 리모델링의 필요성 -->
+        <section>
+            <div class="mb-12 text-center">
+                <h2 class="text-3xl font-bold sm-dark mb-4">1. 리모델링의 필요성 (AS-IS vs TO-BE)</h2>
+                <p class="text-lg sm-gray max-w-2xl mx-auto">현재 홈페이지는 기부금 영수증 발급 등 핵심 서비스 접근성이 낮고, 시각화가 부재합니다. 리모델링을 통해
+                    기부자의 여정을 극적으로 단축시킵니다.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <div class="glass-card rounded-2xl p-6 border-l-4 border-[#A5AEB4]">
+                        <h3 class="text-xl font-bold mb-2">현재 현황 (AS-IS)</h3>
+                        <ul class="list-disc list-inside text-gray-600 space-y-2">
+                            <li>핵심 메뉴가 깊이 숨겨진 <strong>접근성 저하</strong></li>
+                            <li>업데이트가 정체된 <strong>콘텐츠 노후화</strong></li>
+                            <li>텍스트 위주의 <strong>시각화 부재</strong></li>
+                            <li>기부 이탈률이 높은 <strong>연동성 결여</strong></li>
+                        </ul>
+                    </div>
+                    <div class="glass-card rounded-2xl p-6 border-l-4 border-[#D31945]">
+                        <h3 class="text-xl font-bold sm-red mb-2">개선 목표 (TO-BE)</h3>
+                        <ul class="list-disc list-inside text-gray-600 space-y-2">
+                            <li>단 3번의 클릭! <strong>기부자 중심 UI/UX</strong></li>
+                            <li>대시보드를 통한 <strong>투명한 데이터 공개</strong></li>
+                            <li>영상/인터뷰 중심의 <strong>스토리텔링 강화</strong></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="text-lg font-bold text-center mb-4">기부 프로세스 효율화 지표 (예상)</h3>
+                    <div class="chart-container">
+                        <canvas id="efficiencyChart"></canvas>
+                    </div>
+                    <p class="text-sm text-center text-gray-500 mt-4">단위: 클릭 수 / 시간(초)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. 핵심 개선 전략 6가지 -->
+        <section class="bg-white rounded-3xl shadow-xl p-8 md:p-12 border border-gray-100">
+            <div class="mb-12 text-center">
+                <h2 class="text-3xl font-bold sm-dark mb-4">2. 핵심 개선 전략 6가지</h2>
+                <p class="text-lg sm-gray max-w-2xl mx-auto">새로운 플랫폼은 단순한 정보 제공을 넘어 기부를 유도하고 신뢰를 구축하는 강력한 도구가 됩니다.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-[#f8fafc] rounded-xl p-6 border border-gray-100 hover:shadow-md transition-shadow">
+                    <span class="unicode-icon sm-red">&#x23E9;</span>
+                    <h3 class="text-xl font-bold mb-3">Quick-Service 도입</h3>
+                    <p class="text-gray-600 text-sm">메인 화면에 '영수증 간편 발급', '나의 기부 내역' 등 핵심 메뉴를 최상단 퀵 메뉴로 배치하여 편의성 극대화
+                    </p>
+                </div>
+
+                <div class="bg-[#f8fafc] rounded-xl p-6 border border-gray-100 hover:shadow-md transition-shadow">
+                    <span class="unicode-icon sm-teal">&#x1F5FA;&#xFE0F;</span>
+                    <h3 class="text-xl font-bold mb-3">S-Members 재정리</h3>
+                    <p class="text-gray-600 text-sm">'후원의 집'을 선문 브랜드로 통합하고, 지도 API를 연동하여 교내외 기부자 명패와 후원의 집을 시각적으로 제공
+                    </p>
+                </div>
+
+                <div class="bg-[#f8fafc] rounded-xl p-6 border border-gray-100 hover:shadow-md transition-shadow">
+                    <span class="unicode-icon sm-red">&#x1F3A5;</span>
+                    <h3 class="text-xl font-bold mb-3">멀티미디어 허브</h3>
+                    <p class="text-gray-600 text-sm">발전기금 및 동문 관련 영상의 허브 역할로서, 고화질 영상 콘텐츠 섹션을 운영
+                    </p>
+                </div>
+
+                <div class="bg-[#f8fafc] rounded-xl p-6 border border-gray-100 hover:shadow-md transition-shadow">
+                    <span class="unicode-icon sm-teal">&#x1F4CA;</span>
+                    <h3 class="text-xl font-bold mb-3">기부 리포트 자동화</h3>
+                    <p class="text-gray-600 text-sm">관리자 데이터베이스와 실시간으로 연동되어, 단과대학별, 목적별 모금 현황을 투명한 그래프로 자동 시각화</p>
+                </div>
+
+                <div class="bg-[#f8fafc] rounded-xl p-6 border border-gray-100 hover:shadow-md transition-shadow">
+                    <span class="unicode-icon sm-red">&#x1F4B8;</span>
+                    <h3 class="text-xl font-bold mb-3">기부 방식의 다변화</h3>
+                    <p class="text-gray-600 text-sm">MZ세대 동문을 타겟으로 한 '크라우드 펀딩' 기능과 '상시 이벤트 기부'를 도입하여 소액 기부의 심리적 장벽 낮춤
+                    </p>
+                </div>
+
+                <div class="bg-[#f8fafc] rounded-xl p-6 border border-gray-100 hover:shadow-md transition-shadow">
+                    <span class="unicode-icon sm-teal">&#x1F4F1;</span>
+                    <h3 class="text-xl font-bold mb-3">간편결제 도입</h3>
+                    <p class="text-gray-600 text-sm">네이버페이, 카카오페이, 토스페이 등 주요 간편결제 시스템을 연동하여 모바일 환경에서의 기부 참여 접근성을 획기적으로
+                        확대</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. 기술 스택 및 디자인 시스템 -->
+        <section>
+            <div class="mb-12 text-center">
+                <h2 class="text-3xl font-bold sm-dark mb-4">3. 기술 스택 및 디자인 시스템</h2>
+                <p class="text-lg sm-gray max-w-2xl mx-auto">최신 웹 기술과 일관된 브랜드 컬러를 통해 안정적이고 신뢰감 있는 사용자 경험을 구축합니다.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-start">
+                <!-- 개발 계획 및 기술 스택 -->
+                <div class="glass-card rounded-2xl p-8 border-t-4 border-sm-teal h-full">
+                    <h3 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                        <span class="text-sm-teal text-3xl">&#x2699;&#xFE0F;</span> 기술 스택 (Tech Stack)
+                    </h3>
+                    <div class="space-y-6">
+                        <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-bold text-lg">Frontend</h4>
+                                <span
+                                    class="px-3 py-1 bg-gray-100 text-gray-700 text-xs font-bold rounded-full">Framework</span>
+                            </div>
+                            <p class="text-gray-600"><span class="font-black text-black">Next.js</span> : SEO 최적화 및 빠른
+                                페이지 로드 속도를 확보하여 사용자 경험을 향상시킵니다.</p>
+                        </div>
+
+                        <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-bold text-lg">UI Library</h4>
+                                <span
+                                    class="px-3 py-1 bg-gray-100 text-gray-700 text-xs font-bold rounded-full">Styling</span>
+                            </div>
+                            <p class="text-gray-600"><span class="font-black text-black">shadcn/ui + Tailwind CSS</span>
+                                : 컴포넌트 기반의 현대적이고 일관된 디자인 시스템을 신속하게 구축합니다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 디자인 시스템 (Color Palette) -->
+                <div class="glass-card rounded-2xl p-8 border-t-4 border-sm-red h-full">
+                    <h3 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                        <span class="text-sm-red text-3xl">&#x1F3A8;</span> 디자인 시스템
+                    </h3>
+                    <div class="bg-gray-50 rounded-lg p-4 mb-6 text-sm text-gray-700 italic border-l-4 border-gray-300">
+                        <strong>Concept:</strong> 신뢰와 열정을 상징하는 Red를 포인트로 사용하되, Teal 컬러를 활용하여 안정감 있는 대시보드 환경을 조성합니다.
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="rounded-xl overflow-hidden shadow-sm border border-gray-100">
+                            <div
+                                class="h-20 bg-[#D31945] flex items-center justify-center text-white font-bold tracking-wide">
+                                Main: 선문 Red</div>
+                            <div class="bg-white p-3 flex justify-between items-center text-sm">
+                                <span class="text-gray-500 font-medium">HEX</span>
+                                <span class="font-bold text-gray-800">#D31945</span>
+                            </div>
+                        </div>
+                        <div class="rounded-xl overflow-hidden shadow-sm border border-gray-100">
+                            <div
+                                class="h-20 bg-[#006A79] flex items-center justify-center text-white font-bold tracking-wide">
+                                Main: 선문 Teal</div>
+                            <div class="bg-white p-3 flex justify-between items-center text-sm">
+                                <span class="text-gray-500 font-medium">HEX</span>
+                                <span class="font-bold text-gray-800">#006A79</span>
+                            </div>
+                        </div>
+                        <div class="rounded-xl overflow-hidden shadow-sm border border-gray-100">
+                            <div
+                                class="h-16 bg-[#A5AEB4] flex items-center justify-center text-white font-bold tracking-wide">
+                                Sub: Gray</div>
+                            <div class="bg-white p-3 flex justify-between items-center text-sm">
+                                <span class="text-gray-500 font-medium">HEX</span>
+                                <span class="font-bold text-gray-800">#A5AEB4</span>
+                            </div>
+                        </div>
+                        <div class="rounded-xl overflow-hidden shadow-sm border border-gray-100">
+                            <div
+                                class="h-16 bg-[#0D1F1D] flex items-center justify-center text-white font-bold tracking-wide">
+                                Sub: Dark Green</div>
+                            <div class="bg-white p-3 flex justify-between items-center text-sm">
+                                <span class="text-gray-500 font-medium">HEX</span>
+                                <span class="font-bold text-gray-800">#0D1F1D</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. 랜딩 페이지 타입별 상세 목업 -->
+        <section class="bg-white rounded-3xl shadow-xl p-8 md:p-12 border border-gray-100">
+            <div class="mb-12 text-center">
+                <h2 class="text-3xl font-bold sm-dark mb-4">4. 프론트엔드(랜딩 페이지) 타입별 상세 목업</h2>
+                <p class="text-lg sm-gray max-w-2xl mx-auto">의사결정권자의 선호도에 따른 3가지 레이아웃 샘플입니다. <span
+                        class="text-sm-red font-bold">(클릭 시 상세 페이지 이동)</span></p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Option A Mockup Link -->
+                <a href="option_a.html" target="_blank"
+                    class="flex flex-col space-y-4 group cursor-pointer hover:-translate-y-2 transition-transform duration-300">
+                    <div
+                        class="mockup-window h-64 flex flex-col group-hover:border-sm-red group-hover:shadow-[0_0_15px_rgba(211,25,69,0.3)] transition-all duration-300">
+                        <div class="mockup-header">
+                            <div class="mockup-dot"></div>
+                            <div class="mockup-dot"></div>
+                            <div class="mockup-dot"></div>
+                        </div>
+                        <div class="flex-1 bg-gray-50 p-3">
+                            <div class="h-4 bg-sm-teal w-1/2 rounded mb-4"></div>
+                            <div class="grid grid-cols-2 gap-2 mb-4">
+                                <div class="h-16 bg-white rounded border border-gray-100 p-2 flex flex-col justify-end">
+                                    <div class="h-2 bg-gray-200 w-full mb-1"></div>
+                                    <div class="h-4 bg-sm-teal w-2/3"></div>
+                                </div>
+                                <div class="h-16 bg-white rounded border border-gray-100 p-2 flex flex-col justify-end">
+                                    <div class="h-2 bg-gray-200 w-full mb-1"></div>
+                                    <div class="h-4 bg-sm-red w-3/4"></div>
+                                </div>
+                            </div>
+                            <div class="h-20 bg-white rounded border border-gray-100 p-2 relative overflow-hidden">
+                                <div class="flex items-end gap-1 h-full">
+                                    <div class="flex-1 bg-sm-teal h-1/2 rounded-t-sm"></div>
+                                    <div class="flex-1 bg-sm-teal h-2/3 rounded-t-sm"></div>
+                                    <div class="flex-1 bg-sm-teal h-1/3 rounded-t-sm"></div>
+                                    <div class="flex-1 bg-sm-teal h-full rounded-t-sm"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <h4 class="font-black text-lg group-hover:text-sm-red transition-colors">옵션 A: 데이터 대시보드형</h4>
+                        <p class="text-xs text-gray-500 mt-1">숫자와 그래프로 신뢰감을 주는 구조</p>
+                    </div>
+                </a>
+
+                <!-- Option B Mockup Link -->
+                <a href="option_b.html" target="_blank"
+                    class="flex flex-col space-y-4 group cursor-pointer hover:-translate-y-2 transition-transform duration-300">
+                    <div
+                        class="mockup-window h-64 flex flex-col group-hover:border-sm-red group-hover:shadow-[0_0_15px_rgba(211,25,69,0.3)] transition-all duration-300">
+                        <div class="mockup-header">
+                            <div class="mockup-dot"></div>
+                            <div class="mockup-dot"></div>
+                            <div class="mockup-dot"></div>
+                        </div>
+                        <div class="flex-1 relative bg-sm-dark">
+                            <div class="absolute inset-0 opacity-40 bg-gradient-to-t from-black to-transparent"></div>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div
+                                    class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-sm-teal pl-1">
+                                    &#x25B6;</div>
+                            </div>
+                            <div class="absolute bottom-4 left-4 right-4">
+                                <div class="h-3 bg-white w-3/4 rounded mb-2"></div>
+                                <div class="h-2 bg-white w-1/2 rounded opacity-60"></div>
+                            </div>
+                        </div>
+                        <div class="h-16 bg-white p-3 flex gap-2">
+                            <div class="w-10 h-10 rounded-full bg-gray-200 flex-shrink-0"></div>
+                            <div class="flex-1">
+                                <div class="h-2 bg-gray-200 w-1/3 mb-2"></div>
+                                <div class="h-3 bg-gray-100 w-full"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <h4 class="font-black text-lg group-hover:text-sm-red transition-colors">옵션 B: 비주얼 스토리텔링형</h4>
+                        <p class="text-xs text-gray-500 mt-1">영상과 인터뷰로 감성을 자극하는 구조</p>
+                    </div>
+                </a>
+
+                <!-- Option C Mockup Link -->
+                <a href="option_c.html" target="_blank"
+                    class="flex flex-col space-y-4 group cursor-pointer hover:-translate-y-2 transition-transform duration-300">
+                    <div
+                        class="mockup-window h-64 flex flex-col group-hover:border-sm-red group-hover:shadow-[0_0_15px_rgba(211,25,69,0.3)] transition-all duration-300">
+                        <div class="mockup-header">
+                            <div class="mockup-dot"></div>
+                            <div class="mockup-dot"></div>
+                            <div class="mockup-dot"></div>
+                        </div>
+                        <div class="flex-1 bg-gray-50 p-3 grid grid-cols-2 gap-3">
+                            <div class="bg-white rounded border border-gray-100 p-2 flex flex-col space-y-2">
+                                <div class="h-12 bg-gray-200 rounded"></div>
+                                <div class="h-2 bg-gray-100 w-full"></div>
+                                <div class="h-1.5 bg-gray-100 w-full rounded-full overflow-hidden">
+                                    <div class="h-full bg-sm-red w-1/2"></div>
+                                </div>
+                                <div class="h-4 bg-sm-teal rounded-sm"></div>
+                            </div>
+                            <div class="bg-white rounded border border-gray-100 p-2 flex flex-col space-y-2">
+                                <div class="h-12 bg-gray-200 rounded"></div>
+                                <div class="h-2 bg-gray-100 w-full"></div>
+                                <div class="h-1.5 bg-gray-100 w-full rounded-full overflow-hidden">
+                                    <div class="h-full bg-sm-red w-3/4"></div>
+                                </div>
+                                <div class="h-4 bg-sm-teal rounded-sm"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <h4 class="font-black text-lg group-hover:text-sm-red transition-colors">옵션 C: 전환 최적화 펀딩형</h4>
+                        <p class="text-xs text-gray-500 mt-1">즉각적인 기부 참여를 유도하는 구조</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Chart for context -->
+            <div class="mt-12 lg:col-span-7 glass-card rounded-2xl p-6 max-w-4xl mx-auto bg-gray-50">
+                <h3 class="text-lg font-bold text-center mb-4">각 타입별 사용자 경험(UX) 가치 분석</h3>
+                <div class="chart-container">
+                    <canvas id="landingOptionChart"></canvas>
+                </div>
+                <p class="text-xs text-center text-gray-500 mt-2">랜딩 페이지 최상단 배치 전략에 따른 가치 비중</p>
+            </div>
+        </section>
+
+        <!-- 5. 관리자 페이지(백오피스) 리모델링 전략 (신규 추가) -->
+        <section>
+            <div class="mb-12 text-center">
+                <h2 class="text-3xl font-bold sm-dark mb-4">5. 관리자 페이지(백오피스) 리모델링 전략</h2>
+                <p class="text-lg sm-gray max-w-2xl mx-auto">기존의 폼(Form) 위주 UI에서 벗어나, 대학 발전기금의 거시적인 흐름을 한눈에 파악할 수 있는 데이터
+                    기반 관제 센터를 구축합니다.</p>
+            </div>
+
+            <div class="glass-card rounded-3xl p-8 md:p-12 border-t-8 border-sm-teal relative overflow-hidden">
+                <!-- Decorative background elements -->
+                <div
+                    class="absolute top-0 right-0 w-64 h-64 bg-sm-teal opacity-5 rounded-full transform translate-x-1/3 -translate-y-1/3">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 relative z-10">
+                    <!-- Text Content -->
+                    <div class="space-y-8">
+                        <div>
+                            <h3 class="text-xl font-bold mb-3 flex items-center gap-2">
+                                <span class="text-sm-teal text-2xl">&#x1F4CA;</span> 데이터 기반 관제 센터 (SaaS형 대시보드)
+                            </h3>
+                            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm text-sm">
+                                <p class="mb-2"><span class="font-bold sm-red bg-red-50 px-2 py-1 rounded">AS-IS</span>
+                                    로그인 시 빈 목록이나 방대한 검색 필터가 먼저 노출되어 직관적인 데이터 파악이 불가능했습니다.</p>
+                                <p><span class="font-bold sm-teal bg-teal-50 px-2 py-1 rounded">TO-BE</span> 금월 모금액, 기부자
+                                    증가 추이, 목적별 비율을 시각화한 차트와 핵심 KPI 카드를 최상단에 배치하여 관리자가 매일 아침 성과를 즉시 파악할 수 있도록 설계했습니다.</p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-xl font-bold mb-3 flex items-center gap-2">
+                                <span class="text-sm-teal text-2xl">&#x1F3A8;</span> 브랜드 아이덴티티 및 신뢰감 부여
+                            </h3>
+                            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm text-sm text-gray-700">
+                                선문대학교 메인 컬러를 적극 활용합니다.
+                                <span class="font-bold text-[#006A79]">Teal 컬러</span>를 메인 액션 및 긍정 지표에 사용하여 금융/기금 시스템으로서의
+                                안정성과 신뢰성을 강조했고,
+                                <span class="font-bold text-[#D31945]">Red 컬러</span>를 알림 및 강조(예: 입금 대기건) 용도로 사용하여 실무자의
+                                인지 오류를 방지했습니다.
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-xl font-bold mb-3 flex items-center gap-2">
+                                <span class="text-sm-teal text-2xl">&#x2728;</span> 복잡도 제거 및 UI 공간 효율화
+                            </h3>
+                            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm text-sm">
+                                <p class="mb-2"><span class="font-bold sm-red bg-red-50 px-2 py-1 rounded">AS-IS</span>
+                                    약정/회원 관리 메뉴에서 화면 상단 절반을 차지하던 복잡한 검색 필터 박스가 존재했습니다.</p>
+                                <p><span class="font-bold sm-teal bg-teal-50 px-2 py-1 rounded">TO-BE</span> 실제 업무 시 해당
+                                    필터들은 상단의 '통합 검색바'나 '슬라이드 아웃 패널'로 숨겨 공간을 확보하고, 상태(접수/대기)를 뱃지 형태로 시각화하여 가독성을 극대화했습니다.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Preview / Link Card -->
+                    <div class="flex items-center justify-center">
+                        <div
+                            class="bg-[#0D1F1D] text-white rounded-2xl p-8 w-full text-center space-y-6 shadow-2xl relative overflow-hidden group">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-br from-[#006A79] to-[#0D1F1D] opacity-50 group-hover:opacity-70 transition-opacity">
+                            </div>
+
+                            <div class="relative z-10">
+                                <div
+                                    class="w-20 h-20 mx-auto bg-white/10 rounded-full flex items-center justify-center mb-6 border border-white/20">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-[#FFD166]" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                    </svg>
+                                </div>
+                                <h3 class="text-3xl font-bold mb-2">새로운 관리자 대시보드</h3>
+                                <p class="text-gray-300 text-sm mb-8 leading-relaxed">
+                                    실무자의 업무 효율을 200% 향상시킬<br>SaaS형 백오피스 프로토타입을 별도로 준비했습니다.
+                                </p>
+                                <a href="manage.html" target="_blank"
+                                    class="inline-flex items-center justify-center gap-2 w-full py-4 bg-[#D31945] text-white font-bold rounded-xl hover:bg-[#b01338] transition-all shadow-lg hover:shadow-red-500/30">
+                                    관리자 대시보드 샘플 보기
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-0L10 14" />
+                                    </svg>
+                                </a>
+                                <p class="text-xs text-gray-400 mt-4">* 클릭 시 새 창에서 열립니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. 향후 일정 및 기대 효과 (번호 변경) -->
+        <section class="bg-sm-teal text-white rounded-3xl shadow-xl p-8 md:p-12 overflow-hidden relative">
+            <div
+                class="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full transform translate-x-1/2 -translate-y-1/2">
+            </div>
+            <div
+                class="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-5 rounded-full transform -translate-x-1/2 translate-y-1/2">
+            </div>
+
+            <div class="mb-12 text-center relative z-10">
+                <h2 class="text-3xl font-bold mb-4">6. 향후 일정 및 기대 효과</h2>
+                <p class="text-lg opacity-90 max-w-2xl mx-auto">체계적인 개발 마일스톤과 성공적인 런칭 후 기대되는 정량적 성장 지표입니다.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 relative z-10">
+                <div>
+                    <h3 class="text-2xl font-bold mb-8 text-[#FFD166]">개발 마일스톤 (총 8주)</h3>
+                    <div class="timeline-container">
+                        <div class="timeline-line"></div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <h4 class="font-bold text-lg mb-1">1주차: 요구사항 분석</h4>
+                            <p class="text-sm opacity-80">기존 데이터 구조 파악 및 세부 기획 확정</p>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <h4 class="font-bold text-lg mb-1">2~3주차: UI/UX 디자인</h4>
+                            <p class="text-sm opacity-80">선택된 랜딩/관리자 페이지 프로토타입 확정</p>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <h4 class="font-bold text-lg mb-1">4~7주차: 프론트/백엔드 개발</h4>
+                            <p class="text-sm opacity-80">Next.js 기반 프론트엔드 및 데이터 대시보드 연동</p>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <h4 class="font-bold text-lg mb-1">8주차: QA 및 안정화</h4>
+                            <p class="text-sm opacity-80">결제 테스트 및 보안 검수, 정식 오픈</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white text-gray-800 rounded-2xl p-6 shadow-lg flex flex-col justify-center">
+                    <h3 class="text-xl font-bold mb-2 text-center">예상 기부 참여율 증가 추이</h3>
+                    <p class="text-center text-sm text-gray-500 mb-6">시스템 리뉴얼 이후 분기별 예상 성장 (목표치: +20%)</p>
+                    <div class="chart-container" style="height: 280px;">
+                        <canvas id="growthChart"></canvas>
+                    </div>
+                    <div class="mt-6 text-center">
+                        <p class="font-bold text-sm bg-[#f8fafc] py-3 rounded-lg border border-gray-100 px-4">
+                            "기부자 여정 최적화 및 관리자 업무 효율화로 행정 비용이 감소하며,<br>MZ 세대의 소액 기부 유입으로 <span class="sm-red text-lg">참여율
+                                20%
+                                향상</span>을 확신합니다."
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-sm-dark text-white py-12 text-center">
+        <div class="max-w-4xl mx-auto px-6">
+            <h2 class="text-2xl font-bold mb-4 sm-red">선택하신 타입에 따라 즉시 상세 설계를 시작하겠습니다.</h2>
+            <p class="text-gray-400 mb-8">선문대학교의 브랜드 가치를 가장 잘 담아낼 수 있는 방향을 결정해 주세요.</p>
+            <div class="text-sm text-gray-500">
+                &copy; 2026 선문대학교 디지털 전략 개발 파트너. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function wrapText(text, maxChars) {
+            if (text.length <= maxChars) return text;
+            const words = text.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+            for (let i = 1; i < words.length; i++) {
+                if (currentLine.length + words[i].length + 1 <= maxChars) {
+                    currentLine += ' ' + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        const tooltipConfig = {
+            callbacks: {
+                title: function (tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    } else {
+                        return label;
+                    }
+                }
+            }
+        };
+
+        Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
+        Chart.defaults.color = '#64748b';
+
+        const efficiencyLabelsRaw = ['영수증 발급 (클릭 수)', '기부 참여 단계 (클릭 수)', '후원의 집 탐색 (분)', '모금 현황 파악 (분)'];
+        const efficiencyLabels = efficiencyLabelsRaw.map(lbl => wrapText(lbl, 16));
+
+        const ctxEff = document.getElementById('efficiencyChart').getContext('2d');
+        new Chart(ctxEff, {
+            type: 'bar',
+            data: {
+                labels: efficiencyLabels,
+                datasets: [
+                    {
+                        label: '현재 (AS-IS)',
+                        data: [8, 6, 15, 10],
+                        backgroundColor: '#A5AEB4',
+                        borderRadius: 4
+                    },
+                    {
+                        label: '리모델링 후 (TO-BE)',
+                        data: [3, 3, 2, 1],
+                        backgroundColor: '#D31945',
+                        borderRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    legend: { position: 'top' },
+                    tooltip: tooltipConfig
+                },
+                scales: {
+                    x: { beginAtZero: true, grid: { color: '#f1f5f9' } },
+                    y: { grid: { display: false } }
+                }
+            }
+        });
+
+        const landingLabelsRaw = ['옵션 A (대시보드)', '옵션 B (스토리텔링)', '옵션 C (펀딩 최적화)'];
+        const landingLabels = landingLabelsRaw.map(lbl => wrapText(lbl, 16));
+
+        const ctxLanding = document.getElementById('landingOptionChart').getContext('2d');
+        new Chart(ctxLanding, {
+            type: 'bar',
+            data: {
+                labels: landingLabels,
+                datasets: [
+                    {
+                        label: '투명성/신뢰 지표',
+                        data: [70, 20, 20],
+                        backgroundColor: '#006A79',
+                        stack: 'Stack 0',
+                    },
+                    {
+                        label: '감성/스토리 요소',
+                        data: [20, 70, 30],
+                        backgroundColor: '#A5AEB4',
+                        stack: 'Stack 0',
+                    },
+                    {
+                        label: '행동 촉구(CTA)',
+                        data: [10, 10, 50],
+                        backgroundColor: '#D31945',
+                        stack: 'Stack 0',
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: tooltipConfig
+                },
+                scales: {
+                    x: { stacked: true, grid: { display: false } },
+                    y: { stacked: true, beginAtZero: true, max: 100, ticks: { callback: function (value) { return value + "%" } }, grid: { color: '#f1f5f9' } }
+                }
+            }
+        });
+
+        const growthLabelsRaw = ['오픈 전', '런칭 1분기', '런칭 2분기', '런칭 3분기', '런칭 4분기'];
+        const growthLabels = growthLabelsRaw.map(lbl => wrapText(lbl, 16));
+
+        const ctxGrowth = document.getElementById('growthChart').getContext('2d');
+        new Chart(ctxGrowth, {
+            type: 'line',
+            data: {
+                labels: growthLabels,
+                datasets: [{
+                    label: '예상 기부 참여 건수 Index',
+                    data: [100, 105, 112, 118, 122],
+                    borderColor: '#D31945',
+                    backgroundColor: 'rgba(211, 25, 69, 0.1)',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#006A79',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 5,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: tooltipConfig
+                },
+                scales: {
+                    x: { grid: { display: false } },
+                    y: { beginAtZero: false, suggestedMin: 90, grid: { borderDash: [5, 5] } }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

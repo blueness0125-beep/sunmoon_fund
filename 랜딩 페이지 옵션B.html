@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>선문대학교 발전기금 - 비주얼 스토리텔링</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+    body { font-family: 'Noto Sans KR', sans-serif; background-color: #ffffff; color: #0D1F1D; overflow-x: hidden; }
+
+    /* 선문대학교 공식 UI 컬러 시스템 */
+    :root {
+        --sm-red:  #D31945;  /* 메인 빨강 (태양) */
+        --sm-teal: #006A79;  /* 메인 청록 (달)   */
+        --sm-gray: #A5AEB4;  /* 서브 회색         */
+        --sm-dark: #0D1F1D;  /* 서브 검정         */
+        /* 확장 팔레트 */
+        --p-red:   #E63946;  /* Punch Red    */
+        --p-honey: #F1FAEE;  /* Honeydew     */
+        --p-frost: #A8DADC;  /* Frosted Blue */
+        --p-blue:  #457B9D;  /* Cerulean     */
+        --p-navy:  #1D3557;  /* Oxford Navy  */
+    }
+
+    /* 선문대학교 태극 심볼 (빨강·청록 반원 분할) */
+    .sm-symbol {
+        width: 40px; height: 40px;
+        border-radius: 50%;
+        background: conic-gradient(#D31945 0deg 180deg, #006A79 180deg 360deg);
+        flex-shrink: 0;
+    }
+    .sm-symbol-sm {
+        width: 32px; height: 32px;
+        border-radius: 50%;
+        background: conic-gradient(#D31945 0deg 180deg, #006A79 180deg 360deg);
+        flex-shrink: 0;
+    }
+    .sm-red { color: #D31945; }
+    .bg-sm-red { background-color: #D31945; }
+    .sm-teal { color: #006A79; }
+    .bg-sm-teal { background-color: #006A79; }
+    .sm-gray { color: #A5AEB4; }
+    .bg-sm-gray { background-color: #A5AEB4; }
+    .sm-dark { color: #0D1F1D; }
+    
+    .hero-video-overlay {
+        background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.7));
+    }
+    
+    .story-card {
+        transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .story-card:hover {
+        transform: scale(1.02);
+    }
+
+    .play-button {
+        width: 80px;
+        height: 80px;
+        background: rgba(255,255,255,0.2);
+        backdrop-filter: blur(5px);
+        border: 2px solid white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    .play-button:hover {
+        background: white;
+        color: #D31945;
+        transform: scale(1.1);
+    }
+
+    .quote-icon {
+        font-size: 4rem;
+        line-height: 1;
+        opacity: 0.1;
+        position: absolute;
+        top: -10px;
+        left: -10px;
+    }
+    
+    .scroll-down {
+        animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+        40% {transform: translateY(-10px);}
+        60% {transform: translateY(-5px);}
+    }
+</style>
+</head>
+<body class="antialiased">
+
+<!-- Palette Name: Sunmoon Brand Identity (Red #D31945, Teal #006A79, Gray #A5AEB4, Dark #0D1F1D) -->
+<!-- Confirmed: NO SVG, NO MERMAID JS used in this implementation. -->
+
+<!-- Navigation -->
+<nav class="absolute top-0 left-0 w-full z-50 text-white" style="border-bottom:1px solid rgba(255,255,255,0.12); background:linear-gradient(to bottom, rgba(29,53,87,0.75) 0%, transparent 100%); backdrop-filter:blur(2px);">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="flex justify-between h-24 items-center">
+            <div class="flex items-center gap-3">
+                <div class="sm-symbol" style="box-shadow:0 0 0 2px rgba(255,255,255,0.3);"></div>
+                <div class="flex flex-col leading-none">
+                    <span class="font-black text-base tracking-tight text-white">선문대학교</span>
+                    <span class="font-bold text-xs tracking-wider" style="color:#A8DADC;">발전기금</span>
+                </div>
+            </div>
+            <div class="hidden md:flex space-x-10 text-sm font-bold">
+                <a href="#" class="transition-colors hover:text-white" style="color:rgba(255,255,255,0.85);">스토리</a>
+                <a href="#" class="transition-colors hover:text-white" style="color:rgba(255,255,255,0.85);">캠페인</a>
+                <a href="#" class="font-black text-white" style="border-bottom:2px solid #E63946; padding-bottom:2px;">동영상</a>
+                <a href="#" class="transition-colors hover:text-white" style="color:rgba(255,255,255,0.85);">선문멤버스</a>
+            </div>
+            <button class="text-white px-8 py-3 rounded-full text-sm font-bold shadow-xl hover:opacity-90 transition-all" style="background-color:#E63946;">후원하기</button>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="relative h-screen flex items-center justify-center overflow-hidden bg-sm-dark">
+    <!-- Image Placeholder for Video Background -->
+    <div class="absolute inset-0 bg-cover bg-center opacity-60" style="background-image: url('https://images.unsplash.com/photo-1523050335456-c95a890632ff?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');"></div>
+    <div class="absolute inset-0 hero-video-overlay"></div>
+    
+    <div class="relative z-10 text-center text-white px-6">
+        <h2 class="text-xl md:text-2xl font-light mb-4 tracking-widest opacity-80">선문대학교 발전기금 캠페인</h2>
+        <h1 class="text-4xl md:text-7xl font-black mb-12 leading-tight">선문에서 시작된<br><span class="text-[#FFD166]">나눔의 기적</span></h1>
+        
+        <div class="flex flex-col items-center gap-6">
+            <div class="play-button">
+                <span class="text-3xl ml-1">&#x25B6;</span>
+            </div>
+            <p class="text-sm font-bold" style="color:rgba(255,255,255,0.88);">기부 홍보 영상 시청하기</p>
+        </div>
+    </div>
+    
+    <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 scroll-down">
+        <span class="text-3xl text-white opacity-40">&#x2193;</span>
+    </div>
+</section>
+
+<!-- Mission Quote -->
+<section class="py-24 bg-white text-center">
+    <div class="max-w-4xl mx-auto px-6 relative">
+        <span class="quote-icon sm-teal">&#x201C;</span>
+        <h3 class="text-2xl md:text-4xl font-light leading-relaxed sm-dark italic">
+            "기부자님의 따뜻한 마음은 학생들의 <span class="font-black sm-red">꿈을 이루는 열쇠</span>가 되고,<br class="hidden md:block">
+            그 꿈은 다시 세상을 바꾸는 <span class="font-black sm-teal">더 큰 기적</span>이 됩니다."
+        </h3>
+        <p class="mt-8 text-gray-600 font-bold">- 선문대학교 총장 -</p>
+    </div>
+</section>
+
+<!-- Human Stories (Student Interviews) -->
+<section class="py-24" style="background-color:#F1FAEE;">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="mb-16">
+            <h4 class="text-sm font-black sm-red tracking-widest mb-2 uppercase">Story of Impact</h4>
+            <h2 class="text-4xl font-black sm-dark">꿈이 자라는 현장</h2>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div class="story-card bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col">
+                <div class="h-80 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1541339907198-e08756ebafe1?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="p-10 flex-1 flex flex-col justify-between">
+                    <div>
+                        <span class="inline-block bg-sm-teal/10 text-sm-teal px-3 py-1 rounded-full text-xs font-bold mb-4">장학기금 수혜자</span>
+                        <h5 class="text-2xl font-black mb-4">"포기하려던 순간, 기부자님의 손을 잡았습니다."</h5>
+                        <p class="text-gray-500 leading-relaxed mb-8">경제적인 어려움으로 학업을 중단하려 할 때 전달된 장학금은 저에게 단순한 돈 이상의 의미였습니다. 그것은 다시 일어설 수 있는 '믿음'이었습니다.</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gray-200"></div>
+                        <p class="text-sm font-bold sm-dark">김선문 학생 (SW융합대학 4학년)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="story-card bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col">
+                <div class="h-80 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="p-10 flex-1 flex flex-col justify-between">
+                    <div>
+                        <span class="inline-block bg-sm-red/10 text-sm-red px-3 py-1 rounded-full text-xs font-bold mb-4">연구지원기금 수혜자</span>
+                        <h5 class="text-2xl font-black mb-4">"글로벌 리더로 성장하는 발판이 되었습니다."</h5>
+                        <p class="text-gray-500 leading-relaxed mb-8">해외 연수 프로그램 참여를 가능하게 해준 기부금 덕분에 저는 더 넓은 세상을 보고 배울 수 있었습니다. 이제 제가 받은 사랑을 사회에 돌려주고 싶습니다.</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gray-200"></div>
+                        <p class="text-sm font-bold sm-dark">박진아 동문 (글로벌비즈니스대학 졸업)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Video Hub (Youtube ASMR/Unboxing Style) -->
+<section class="py-24 bg-sm-dark text-white">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16">
+            <h4 class="text-sm font-black text-sm-red tracking-widest mb-2 uppercase">Video Gallery</h4>
+            <h2 class="text-4xl font-black mb-4">영상으로 만나는 선문</h2>
+            <p class="text-gray-400">학생들이 직접 제작한 언박싱, ASMR 등 다채로운 이야기를 만나보세요.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="group cursor-pointer">
+                <div class="aspect-video bg-gray-800 rounded-2xl mb-4 overflow-hidden relative shadow-lg">
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10 bg-black/40">
+                        <span class="text-4xl">&#x25B6;</span>
+                    </div>
+                    <!-- Image Placeholder -->
+                    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');"></div>
+                </div>
+                <h6 class="font-bold text-lg mb-1 group-hover:text-sm-red transition-colors">선문대학교 졸업인형 언박싱 ASMR</h6>
+                <p class="text-xs text-gray-400">조회수 2.4만회 · 1개월 전</p>
+            </div>
+            <div class="group cursor-pointer">
+                <div class="aspect-video bg-gray-800 rounded-2xl mb-4 overflow-hidden relative shadow-lg">
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10 bg-black/40">
+                        <span class="text-4xl">&#x25B6;</span>
+                    </div>
+                    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');"></div>
+                </div>
+                <h6 class="font-bold text-lg mb-1 group-hover:text-sm-red transition-colors">기부 장학생의 하루 VLOG</h6>
+                <p class="text-xs text-gray-400">조회수 1.8만회 · 2주 전</p>
+            </div>
+            <div class="group cursor-pointer">
+                <div class="aspect-video bg-gray-800 rounded-2xl mb-4 overflow-hidden relative shadow-lg">
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10 bg-black/40">
+                        <span class="text-4xl">&#x25B6;</span>
+                    </div>
+                    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');"></div>
+                </div>
+                <h6 class="font-bold text-lg mb-1 group-hover:text-sm-red transition-colors">천원의 아침밥 리얼 리뷰</h6>
+                <p class="text-xs text-gray-400">조회수 3.1만회 · 3일 전</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats in a human-centric way -->
+<section class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 text-center">
+            <div>
+                <p class="text-5xl font-black sm-red mb-2">1,200+</p>
+                <p class="text-gray-500 font-bold">꿈을 찾은 장학생</p>
+            </div>
+            <div>
+                <p class="text-5xl font-black sm-teal mb-2">15,400+</p>
+                <p class="text-gray-500 font-bold">응원하는 동문들의 손길</p>
+            </div>
+            <div>
+                <p class="text-5xl font-black sm-dark mb-2">420억+</p>
+                <p class="text-gray-500 font-bold">누적 교육 인프라 지원</p>
+            </div>
+            <div>
+                <p class="text-5xl font-black text-gray-600 mb-2">441개</p>
+                <p class="text-gray-500 font-bold">함께하는 선문멤버스</p>
+            </div>
+        </div>
+        
+        <!-- Simplified Chart for Visual Impact -->
+        <div class="mt-20 max-w-4xl mx-auto rounded-3xl p-8 shadow-inner" style="background-color:#F1FAEE;">
+            <h4 class="text-center font-bold sm-dark mb-8">기부금의 98%는 오직 학생들을 위해 투명하게 쓰입니다.</h4>
+            <div class="h-64 relative">
+                <canvas id="humanImpactChart"></canvas>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-32 bg-cover bg-center relative" style="background-image: url('https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');">
+    <div class="absolute inset-0 bg-sm-teal/80 backdrop-blur-sm"></div>
+    <div class="relative z-10 text-center text-white px-6">
+        <h2 class="text-3xl md:text-5xl font-black mb-8 leading-tight">당신의 이야기가<br>누군가에게는 새로운 시작이 됩니다.</h2>
+        <div class="flex flex-col md:flex-row justify-center gap-4">
+            <button class="bg-white text-sm-teal px-10 py-4 rounded-full text-lg font-black hover:bg-gray-100 transition-all shadow-2xl">지금 기부하기</button>
+            <button class="bg-transparent border-2 border-white px-10 py-4 rounded-full text-lg font-black hover:bg-white/10 transition-all">스토리 더보기</button>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="text-white py-16" style="background-color:#1D3557; border-top:4px solid #E63946;">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="flex flex-col md:flex-row justify-between items-start gap-10 pb-10 mb-8" style="border-bottom:1px solid rgba(255,255,255,0.1);">
+            <div>
+                <div class="flex items-center gap-3 mb-5">
+                    <div class="sm-symbol-sm"></div>
+                    <div class="flex flex-col leading-none">
+                        <span class="font-black text-base tracking-tight text-white">선문대학교</span>
+                        <span class="font-bold text-xs tracking-wider" style="color:#A8DADC;">발전기금</span>
+                    </div>
+                </div>
+                <p class="text-sm max-w-xs leading-relaxed" style="color:rgba(255,255,255,0.7);">
+                    충청남도 아산시 탕정면 선문로221번길 70<br>
+                    선문대학교 홍보대외협력국 발전기금팀
+                </p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-10 text-sm">
+                <div>
+                    <h5 class="font-bold mb-4 text-xs uppercase tracking-widest" style="color:#A8DADC;">바로가기</h5>
+                    <ul class="space-y-2" style="color:rgba(255,255,255,0.75);">
+                        <li><a href="#" class="hover:text-white transition-colors">스토리</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">캠페인</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">선문멤버스</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-bold mb-4 text-xs uppercase tracking-widest" style="color:#A8DADC;">고객센터</h5>
+                    <ul class="space-y-2" style="color:rgba(255,255,255,0.75);">
+                        <li>041-530-2000</li>
+                        <li>fund@sunmoon.ac.kr</li>
+                        <li class="text-xs" style="color:rgba(255,255,255,0.5);">평일 09:00 - 17:30</li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-bold mb-4 text-xs uppercase tracking-widest" style="color:#A8DADC;">법적고지</h5>
+                    <ul class="space-y-2" style="color:rgba(255,255,255,0.75);">
+                        <li><a href="#" class="hover:text-white transition-colors">개인정보처리방침</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">이용약관</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">이메일무단수집거부</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <p class="text-xs" style="color:rgba(255,255,255,0.45);">&copy; 2026 선문대학교 (SUNMOON UNIVERSITY). ALL RIGHTS RESERVED.</p>
+    </div>
+</footer>
+
+<script>
+    // Utils for text wrapping
+    function wrapText(text, maxChars) {
+        if (text.length <= maxChars) return text;
+        const words = text.split(' ');
+        const lines = [];
+        let currentLine = words[0];
+        for (let i = 1; i < words.length; i++) {
+            if (currentLine.length + words[i].length + 1 <= maxChars) {
+                currentLine += ' ' + words[i];
+            } else {
+                lines.push(currentLine);
+                currentLine = words[i];
+            }
+        }
+        lines.push(currentLine);
+        return lines;
+    }
+
+    const tooltipConfig = {
+        callbacks: {
+            title: function(tooltipItems) {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) return label.join(' ');
+                return label;
+            }
+        }
+    };
+
+    Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
+    
+    // Impact Chart - Doughnut style for visual appeal
+    const ctxImpact = document.getElementById('humanImpactChart').getContext('2d');
+    new Chart(ctxImpact, {
+        type: 'doughnut',
+        data: {
+            labels: ['장학금 및 학비 지원', '글로벌 연수 프로그램', '학생 복지 및 생활 지원', '연구 및 교육 인프라', '기타 행정 비용'],
+            datasets: [{
+                data: [45, 20, 18, 15, 2],
+                backgroundColor: ['#D31945', '#006A79', '#FFD166', '#A5AEB4', '#0D1F1D'],
+                borderWidth: 0,
+                hoverOffset: 20
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '80%',
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: {
+                        usePointStyle: true,
+                        boxWidth: 8,
+                        font: { size: 12, weight: 'bold' },
+                        padding: 20
+                    }
+                },
+                tooltip: tooltipConfig
+            }
+        }
+    });
+</script>
+</body>
+</html>
