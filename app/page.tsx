@@ -6,7 +6,8 @@ import {
   PlayCircle, Settings, ShieldAlert, CheckCircle2,
   TrendingUp, Users, ChevronRight, CreditCard,
   LayoutDashboard, Monitor, Search, LayoutTemplate,
-  BarChart3, Heart, MousePointerClick
+  BarChart3, Heart, MousePointerClick,
+  Database, Server, RefreshCw, Globe, Smartphone, TabletSmartphone, ArrowDown
 } from 'lucide-react';
 
 // --- 스크롤 애니메이션 훅 ---
@@ -64,10 +65,10 @@ export default function App() {
       {/* 2. Problem vs Solution */}
       <ProblemSolutionSection />
 
-      {/* 3. 6 Core Innovations (Bento Grid) */}
+      {/* 3. 7 Core Innovations (Bento Grid) - 수정됨 */}
       <BentoGridSection />
 
-      {/* 4. 3가지 맞춤형 랜딩페이지 타입 제안 (추가된 섹션) */}
+      {/* 4. 3가지 맞춤형 랜딩페이지 타입 제안 */}
       <LandingPageTypesSection />
 
       {/* 5. Admin Dashboard Preview */}
@@ -250,7 +251,7 @@ function ProblemSolutionSection() {
 }
 
 // ==========================================
-// 3. 6 Core Innovations (Bento Grid)
+// 3. 7 Core Innovations (Bento Grid) - 수정됨
 // ==========================================
 function BentoGridSection() {
   const [ref, isVisible] = useScrollReveal();
@@ -259,11 +260,12 @@ function BentoGridSection() {
     <section className="py-24 bg-[#f8fafc]" ref={ref}>
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-black text-[#0D1F1D] mb-4">6가지 핵심 혁신 전략</h2>
+          <h2 className="text-3xl md:text-4xl font-black text-[#0D1F1D] mb-4">7가지 핵심 혁신 전략</h2>
           <p className="text-[#A5AEB4] text-lg">모바일 최적화부터 관리자 자동화까지, 완벽한 생태계를 구축합니다.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-6xl mx-auto auto-rows-[240px]">
+          {/* 1. Quick-Service */}
           <div className={`col-span-1 md:col-span-2 row-span-1 bg-white rounded-3xl p-6 border border-gray-200 shadow-sm hover:shadow-xl hover:border-[#D31945]/30 transition-all group relative overflow-hidden flex flex-col justify-between ${isVisible ? 'reveal active' : 'reveal'}`}>
             <div className="absolute -right-10 -top-10 w-32 h-32 bg-[#D31945]/5 rounded-full blur-2xl group-hover:bg-[#D31945]/10 transition-all"></div>
             <div>
@@ -279,6 +281,7 @@ function BentoGridSection() {
             </div>
           </div>
 
+          {/* 2. Crowd Funding */}
           <div className={`col-span-1 md:col-span-2 row-span-2 bg-[#006A79] text-white rounded-3xl p-8 border border-[#006A79] shadow-lg relative overflow-hidden group ${isVisible ? 'reveal active' : 'reveal'}`} style={{ transitionDelay: '100ms' }}>
             <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xKSIvPjwvc3ZnPg==')] opacity-50"></div>
             <div className="relative z-10 flex flex-col h-full justify-between">
@@ -288,7 +291,7 @@ function BentoGridSection() {
                 </div>
                 <h3 className="text-2xl font-bold mb-3">크라우드 펀딩 & 간편결제</h3>
                 <p className="text-white/80 text-sm leading-relaxed mb-6">
-                  '천원의 아침밥'과 같은 상시 이벤트를 펀딩 형태로 제공하며, 네이버페이·카카오페이 연동으로 MZ세대 참여를 유도합니다.
+                  '천원의 아침밥'과 같은 상시 이벤트를 펀딩 형태로 제공하며, 네이버페이·카카오페이 연동으로 참여를 유도합니다.
                 </p>
               </div>
               <div className="bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/20">
@@ -309,6 +312,7 @@ function BentoGridSection() {
             </div>
           </div>
 
+          {/* 3. Data Visualization */}
           <div className={`col-span-1 md:col-span-1 lg:col-span-2 row-span-2 bg-white rounded-3xl p-6 border border-gray-200 shadow-sm hover:shadow-xl hover:border-[#006A79]/30 transition-all group flex flex-col ${isVisible ? 'reveal active' : 'reveal'}`} style={{ transitionDelay: '200ms' }}>
             <div className="w-12 h-12 bg-[#006A79]/10 text-[#006A79] rounded-2xl flex items-center justify-center mb-4">
               <PieChart size={24} />
@@ -328,6 +332,7 @@ function BentoGridSection() {
             </div>
           </div>
 
+          {/* 4. S-Members */}
           <div className={`col-span-1 row-span-1 bg-[#0D1F1D] text-white rounded-3xl p-6 border border-gray-800 shadow-sm relative overflow-hidden group ${isVisible ? 'reveal active' : 'reveal'}`} style={{ transitionDelay: '300ms' }}>
             <div className="absolute inset-0 bg-gradient-to-br from-[#006A79]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
             <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center mb-3 text-[#FFD166]">
@@ -337,6 +342,7 @@ function BentoGridSection() {
             <p className="text-gray-400 text-xs">지도 API 기반 후원의 집 및 기부자 명패 위치 시각화</p>
           </div>
 
+          {/* 5. Media Hub */}
           <div className={`col-span-1 row-span-1 bg-white rounded-3xl p-0 border border-gray-200 shadow-sm relative overflow-hidden group ${isVisible ? 'reveal active' : 'reveal'}`} style={{ transitionDelay: '400ms' }}>
             <div className="absolute inset-0 bg-gray-100 bg-[url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=400&auto=format&fit=crop')] bg-cover bg-center transition-transform duration-700 group-hover:scale-110"></div>
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
@@ -344,18 +350,34 @@ function BentoGridSection() {
               <PlayCircle size={48} className="text-white/80 group-hover:text-white transition-colors group-hover:scale-110" />
             </div>
             <div className="absolute bottom-4 left-4 right-4 text-white">
-              <h3 className="text-sm font-bold leading-tight mb-1">언박싱 등 미디어 허브</h3>
+              <h3 className="text-sm font-bold leading-tight mb-1">발전기금 홍보 영상 등의 미디어 허브</h3>
               <p className="text-[10px] text-white/70">홈페이지 직접 재생 콘텐츠</p>
             </div>
           </div>
 
+          {/* 6. Admin Efficiency */}
           <div className={`col-span-1 md:col-span-2 row-span-1 bg-white rounded-3xl p-6 border border-gray-200 shadow-sm hover:border-[#006A79]/50 transition-colors flex items-center gap-6 ${isVisible ? 'reveal active' : 'reveal'}`} style={{ transitionDelay: '500ms' }}>
-            <div className="w-16 h-16 bg-[#f8fafc] rounded-full flex items-center justify-center text-[#A5AEB4] group-hover:animate-spin-slow">
+            <div className="w-16 h-16 bg-[#f8fafc] rounded-full flex items-center justify-center text-[#A5AEB4] group-hover:animate-spin-slow shrink-0">
               <Settings size={32} />
             </div>
             <div>
-              <h3 className="text-xl font-bold text-[#0D1F1D] mb-1">관리자 업무 70% 효율화</h3>
+              <h3 className="text-xl font-bold text-[#0D1F1D] mb-1">관리자 업무 70% 효율화(예상)</h3>
               <p className="text-gray-500 text-sm">데이터 연동 및 엑셀 다운로드 자동화 시스템</p>
+            </div>
+          </div>
+
+          {/* 7. Mobile First (새로 추가된 섹션) */}
+          <div className={`col-span-1 md:col-span-2 row-span-1 bg-gradient-to-br from-[#006A79] to-[#005560] text-white rounded-3xl p-6 border border-[#006A79] shadow-sm hover:shadow-xl transition-all group relative overflow-hidden flex items-center gap-6 ${isVisible ? 'reveal active' : 'reveal'}`} style={{ transitionDelay: '600ms' }}>
+            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xKSIvPjwvc3ZnPg==')] opacity-30"></div>
+            <div className="absolute -right-4 -bottom-4 opacity-10 group-hover:scale-110 transition-transform duration-700 pointer-events-none">
+              <Smartphone size={140} />
+            </div>
+            <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-[#FFD166] shrink-0 relative z-10 group-hover:-translate-y-1 transition-transform">
+              <Smartphone size={32} />
+            </div>
+            <div className="relative z-10">
+              <h3 className="text-xl font-bold mb-1">100% 모바일 완벽 대응</h3>
+              <p className="text-white/80 text-sm pr-4">MZ세대의 트렌드에 맞춰 기부부터 결제, 증명서 발급까지 모든 기능을 스마트폰에서 완벽하게 지원합니다.</p>
             </div>
           </div>
 
@@ -366,7 +388,7 @@ function BentoGridSection() {
 }
 
 // ==========================================
-// 4. Landing Page Types (새로 추가된 섹션)
+// 4. Landing Page Types 
 // ==========================================
 function LandingPageTypesSection() {
   const [ref, isVisible] = useScrollReveal();
@@ -378,7 +400,8 @@ function LandingPageTypesSection() {
       desc: "숫자와 그래프로 대학의 투명성과 신뢰감을 최우선으로 보여주는 구조입니다.",
       icon: <BarChart3 size={24} className="text-[#006A79]" />,
       stats: { data: 70, emotion: 20, cta: 10 },
-      link: "option_a.html",
+      // public 폴더 기준 절대 경로로 수정
+      link: "/option_a.html",
       wireframe: (
         <div className="flex-1 bg-[#f8fafc] p-3 flex flex-col gap-3">
           {/* Header Placeholder */}
@@ -414,7 +437,8 @@ function LandingPageTypesSection() {
       desc: "동문 인터뷰와 고화질 영상으로 방문자의 감성을 자극하고 공감을 이끌어냅니다.",
       icon: <Heart size={24} className="text-[#D31945]" />,
       stats: { data: 20, emotion: 70, cta: 10 },
-      link: "option_b.html",
+      // public 폴더 기준 절대 경로로 수정
+      link: "/option_b.html",
       wireframe: (
         <div className="flex-1 bg-white flex flex-col">
           {/* Hero Video/Image Area */}
@@ -446,7 +470,8 @@ function LandingPageTypesSection() {
       desc: "천원의 아침밥 등 구체적 캠페인을 전면에 배치하여 즉각적인 행동(CTA)을 유도합니다.",
       icon: <MousePointerClick size={24} className="text-[#006A79]" />,
       stats: { data: 20, emotion: 30, cta: 50 },
-      link: "option_c.html",
+      // public 폴더 기준 절대 경로로 수정
+      link: "/option_c.html",
       wireframe: (
         <div className="flex-1 bg-[#f8fafc] p-3 grid grid-cols-2 gap-2">
           {/* Funding Card 1 */}
@@ -547,7 +572,7 @@ function LandingPageTypesSection() {
 
 
 // ==========================================
-// 5. Admin Dashboard Preview
+// 5. Admin Dashboard Preview 
 // ==========================================
 function AdminDashboardSection() {
   const [ref, isVisible] = useScrollReveal();
@@ -563,21 +588,113 @@ function AdminDashboardSection() {
             <p className="text-[#A5AEB4] text-lg">방대한 검색 필터 대신, 인사이트를 제공하는 완벽한 대시보드를 제공합니다.</p>
           </div>
           <button
-            onClick={() => window.open('manage.html', '_blank')}
+            // public 폴더 기준 절대 경로로 수정
+            onClick={() => window.open('/manage.html', '_blank')}
             className="px-6 py-3 bg-white border border-gray-200 text-[#006A79] font-bold rounded-xl shadow-sm hover:bg-gray-50 transition-colors flex items-center gap-2"
           >
             관리자 데모 보기 <ArrowRight size={16} />
           </button>
         </div>
 
-        <div className={`rounded-2xl border border-gray-200 bg-white shadow-[0_20px_50px_rgba(0,106,121,0.1)] overflow-hidden transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`}>
+        {/* --- 데이터 사일로 해소 및 통합 DB 아키텍처 도식화 --- */}
+        <div className={`mb-16 bg-white rounded-3xl p-6 md:p-10 border border-gray-200 shadow-sm transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <div className="mb-10 text-center">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#006A79]/10 text-[#006A79] text-sm font-bold mb-3">
+              <Database size={16} /> 데이터 사일로(Silo) 해소
+            </div>
+            <h3 className="text-2xl font-bold text-[#0D1F1D]">파편화된 DB의 완벽한 일원화</h3>
+            <p className="text-gray-500 mt-2 text-sm max-w-2xl mx-auto">기존 별도로 운영되던 홈페이지와 앱 DB를 대학교 메인 DB로 통합하고, 오프라인 간편 기부를 위한 신규 키오스크 DB 역시 매일 미러링하여 데이터를 일원화합니다.</p>
+          </div>
+
+          <div className="flex flex-col lg:flex-row items-stretch justify-between gap-4 lg:gap-8 relative">
+            {/* 1. AS-IS 파편화된 데이터 소스 */}
+            <div className="flex-1 flex flex-col justify-center gap-4">
+              <div className="p-4 rounded-xl border border-gray-200 bg-gray-50 flex items-center justify-between group hover:border-gray-300 transition-colors shadow-sm">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm text-gray-500"><Globe size={24} /></div>
+                  <div>
+                    <p className="font-bold text-[#0D1F1D]">발전기금 홈페이지 DB</p>
+                    <p className="text-xs text-gray-500 mt-0.5">기존 개별 운영</p>
+                  </div>
+                </div>
+                <span className="text-[10px] font-bold bg-gray-200 text-gray-600 px-2 py-1 rounded whitespace-nowrap">통합 이전</span>
+              </div>
+
+              <div className="p-4 rounded-xl border border-gray-200 bg-gray-50 flex items-center justify-between group hover:border-gray-300 transition-colors shadow-sm">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm text-gray-500"><Smartphone size={24} /></div>
+                  <div>
+                    <p className="font-bold text-[#0D1F1D]">CMS 앱 DB</p>
+                    <p className="text-xs text-gray-500 mt-0.5">기존 개별 운영</p>
+                  </div>
+                </div>
+                <span className="text-[10px] font-bold bg-gray-200 text-gray-600 px-2 py-1 rounded whitespace-nowrap">통합 이전</span>
+              </div>
+
+              <div className="p-4 rounded-xl border-2 border-[#006A79]/30 bg-[#006A79]/5 flex items-center justify-between group hover:border-[#006A79]/50 transition-colors shadow-sm relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-20 h-20 bg-[#006A79]/5 rounded-bl-full"></div>
+                <div className="flex items-center gap-4 relative z-10">
+                  <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm text-[#006A79]"><TabletSmartphone size={24} /></div>
+                  <div>
+                    <p className="font-bold text-[#006A79]">신규 도입 키오스크</p>
+                    <p className="text-xs text-[#006A79]/70 mt-0.5">오프라인 간편 기부</p>
+                  </div>
+                </div>
+                <span className="text-[10px] font-bold bg-[#006A79] text-white px-2 py-1 rounded shadow-sm flex items-center gap-1 relative z-10 whitespace-nowrap">
+                  <RefreshCw size={10} className="animate-spin" style={{ animationDuration: '3s' }} /> 매일 미러링
+                </span>
+              </div>
+            </div>
+
+            {/* 2. 화살표 & 중앙 통합 DB */}
+            <div className="flex-1 flex flex-col lg:flex-row items-center justify-center gap-4">
+              <div className="flex lg:flex-col justify-center gap-2 text-[#A5AEB4]">
+                <ArrowRight className="hidden lg:block w-8 h-8" />
+                <ArrowDown className="lg:hidden w-8 h-8" />
+              </div>
+
+              <div className="bg-[#0D1F1D] p-8 rounded-2xl text-center w-full lg:max-w-[260px] shadow-2xl relative group transform hover:scale-105 transition-transform">
+                <div className="absolute inset-0 bg-gradient-to-t from-[#006A79]/20 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <Server size={48} className="mx-auto mb-4 text-[#FFD166]" />
+                <h4 className="font-bold text-xl text-white mb-2 tracking-tight">선문대학교 통합 DB</h4>
+                <p className="text-xs text-[#A5AEB4] border border-gray-700 rounded-full inline-block px-3 py-1 bg-white/5">Oracle 기반 메인 DB</p>
+              </div>
+
+              <div className="flex lg:flex-col justify-center gap-2 text-[#006A79]">
+                <ArrowRight className="hidden lg:block w-8 h-8" />
+                <ArrowDown className="lg:hidden w-8 h-8" />
+              </div>
+            </div>
+
+            {/* 3. TO-BE 관리자 관제 센터 */}
+            <div className="flex-1 flex items-center justify-center">
+              <div className="bg-gradient-to-br from-[#006A79] to-[#004d58] p-8 rounded-2xl text-white w-full h-full lg:h-auto flex flex-col justify-center shadow-lg transform hover:-translate-y-1 transition-transform text-center relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-bl-full pointer-events-none"></div>
+                <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-5 backdrop-blur-sm shadow-inner">
+                  <LayoutDashboard size={32} className="text-white" />
+                </div>
+                <h4 className="font-bold text-xl mb-3">통합 관리자 관제 센터</h4>
+                <p className="text-sm text-white/80 mb-6 leading-relaxed">
+                  모든 채널의 기부/결제 현황을<br /><strong className="text-white">하나의 대시보드</strong>에서 관리
+                </p>
+                <div className="flex justify-center gap-2 mt-auto">
+                  <span className="w-2 h-2 rounded-full bg-[#FFD166] animate-pulse"></span>
+                  <span className="w-2 h-2 rounded-full bg-[#FFD166] animate-pulse" style={{ animationDelay: '200ms' }}></span>
+                  <span className="w-2 h-2 rounded-full bg-[#FFD166] animate-pulse" style={{ animationDelay: '400ms' }}></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className={`rounded-2xl border border-gray-200 bg-white shadow-[0_20px_50px_rgba(0,106,121,0.1)] overflow-hidden transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`}>
           {/* Mac Header */}
           <div className="h-12 bg-gray-100 border-b border-gray-200 flex items-center px-4 gap-2">
             <div className="w-3 h-3 rounded-full bg-[#ff5f56]"></div>
             <div className="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
             <div className="w-3 h-3 rounded-full bg-[#27c93f]"></div>
             <div className="mx-auto bg-white border border-gray-200 text-gray-400 text-xs px-24 py-1.5 rounded-md flex items-center gap-2">
-              <ShieldAlert size={12} /> admin.fund.sunmoon.ac.kr
+              <ShieldAlert size={12} /> fund.sunmoon.ac.kr/admin
             </div>
           </div>
 
@@ -780,8 +897,14 @@ function FooterCTASection() {
           가장 적합한 방향을 선택해 주시면 즉시 상세 설계에 착수하겠습니다.
         </p>
 
+        <div className="flex flex-col sm:flex-row justify-center gap-4 mb-16">
+          <button className="px-8 py-4 bg-white text-[#006A79] font-bold rounded-xl transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 flex items-center justify-center gap-2">
+            구축 비용 확인하기
+          </button>
+        </div>
+
         <div className="pt-8 border-t border-white/20 text-white/50 text-sm flex flex-col md:flex-row justify-between items-center gap-4">
-          <div>&copy; 2026 선문대학교 디지털 전략 파트너 '블루문 인텔리전스'. All rights reserved.</div>
+          <div>&copy; 2026 선문대학교 디지털 전략 파트너, 블루문 인텔리전스. All rights reserved.</div>
           <div className="flex gap-6">
             <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
